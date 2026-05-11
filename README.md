@@ -40,9 +40,9 @@ Koska sovellus käsittelee kappaleita ja niihin liittyvää tietoa, hyödyntää
 
 ### Tiedon tallennus
 Sovelluksen tietokantana toimii MySQL.
-- Käyttäjät: Käyttäjänimi sekä enkryptattu salasana.
-- Kappaleet: Kategorisoiduista kappaleista tallennetaan tärkeimmät tiedot. Rajapinnasta sekä käyttäjien manuaalisesti lisäämät.
-- Kategoria: Kategoriat, joilla kappaleita kuvaillaan on tallennettuna tietokantaan.
-- Kategoria ryhmä: Kategoria ryhmien nimet on tallennettuna tietokantaan, jotta yksittäiset kategoriat voidaan helposti liittää oikeaan ryhmään.
-- Käyttäjän kuvaus kappaleesta: Tämä on viitetaulu, johon on tallennettu käyttäjän id, kategorian id, kappaleen id sekä päivämäärä.
-- 
+- <b>User</b>: Käyttäjänimi sekä enkryptattu salasana.
+- <b>Track</b>: Kategorisoiduista kappaleista tallennetaan tärkeimmät tiedot. Rajapinnasta sekä käyttäjien manuaalisesti lisäämät.
+- <b>Category</b>: Kategoriat, joilla kappaleita kuvaillaan on tallennettuna tietokantaan.
+- <b>CategoryGroup</b>: Kategoria ryhmien nimet on tallennettuna tietokantaan, jotta yksittäiset kategoriat voidaan helposti liittää oikeaan ryhmään.
+- <b>UserTrackCategory</b>: Tämä on viitetaulu, johon on tallennettu käyttäjän id, kategorian id, kappaleen id sekä päivämäärä.
+![Er-kaavio](https://github.com/to1vo/FindYourMusic/blob/main/er-kaavio.png)
