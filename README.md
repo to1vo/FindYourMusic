@@ -36,7 +36,13 @@ Käyttäjä lisää tarvittavat tiedot haluamastaan kappaleesta, mahdollinen dup
 
 ## Tiedon haku ja tallennus
 ### Tiedon haku
-Koska sovellus käsittelee kappaleita ja niihin liittyvää tietoa, hyödyntää se kolmannen osapuolen rajapintaa. Rajapinnaksi valikoitui [last.fm API](https://www.last.fm/api). Sovellus hyödyntää rajapintaa kappaleiden löytämiseen sekä tietojen tallentamiseen. Osa kappaleen tiedoista tallennetaan sovelluksen tietokantaan, jotta sivuston toiminnallisuus ei ole vain rajapinnan varassa.
+Koska sovellus käsittelee kappaleita ja niihin liittyvää tietoa, hyödyntää se kolmannen osapuolen rajapintaa. Rajapinnaksi valikoitui [last.fm API](https://www.last.fm/api). Sovellus hyödyntää rajapintaa kappaleiden löytämiseen sekä tietojen tallentamiseen. Osa kappaleen tiedoista tallennetaan sovelluksen tietokantaan, jotta sivuston toiminnallisuus ei ole vain rajapinnan varassa. Kyseisen rajapinnan tulokset saattaavat olla välillä puutteellisia, joten se piti ottaa huomioon sitä käyttäessä.
 
 ### Tiedon tallennus
-- Kappaleet 
+Sovelluksen tietokantana toimii MySQL.
+- Käyttäjät: Käyttäjänimi sekä enkryptattu salasana.
+- Kappaleet: Kategorisoiduista kappaleista tallennetaan tärkeimmät tiedot. Rajapinnasta sekä käyttäjien manuaalisesti lisäämät.
+- Kategoria: Kategoriat, joilla kappaleita kuvaillaan on tallennettuna tietokantaan.
+- Kategoria ryhmä: Kategoria ryhmien nimet on tallennettuna tietokantaan, jotta yksittäiset kategoriat voidaan helposti liittää oikeaan ryhmään.
+- Käyttäjän kuvaus kappaleesta: Tämä on viitetaulu, johon on tallennettu käyttäjän id, kategorian id, kappaleen id sekä päivämäärä.
+- 
