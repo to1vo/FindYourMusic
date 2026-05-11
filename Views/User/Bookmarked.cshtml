@@ -1,0 +1,82 @@
+﻿@model UserBookmarksViewModel
+
+@{
+    ViewData["title"] = "Bookmarks";
+}
+
+@if(TempData["error-state"] != null) {
+    <p class="text-error text-center">@TempData["error-state"]</p>
+} else {
+    @if(TempData["error"] != null){
+        <p class="text-error text-center message">@TempData["error"]</p>
+    }
+    <div class="page-container">
+    <div class="user-information-container">
+		<div>
+			<h1 class="page-title">@User.Identity.Name</h1>
+            <a class="button" asp-area="" asp-action="Edit" asp-controller="User">Edit</a>
+		</div>
+		<p class="text-light">Tracks described <b class="text-secondary">@Model.tracksDescribed</b></p>
+	</div>
+
+	<div class="user-view-selection-container text-light">
+        <a class="user-view-link link" asp-area="" asp-action="Index" asp-controller="User">Profile</a>
+		<a class="user-view-link link selected" asp-area="" asp-action="Bookmarked" asp-controller="User">
+            Bookmarked
+            <div class="category-group-selection-bar"></div>
+        </a>
+		<a class="user-view-link link" asp-area="" asp-action="Described" asp-controller="User">Described</a>
+	</div>
+
+    <div class="user-bookmarks-container">
+        @if(Model.bookmarkedTracks.Count() == 0){
+            <p class="text-light no-data-text">No bookmarkings</p>
+        } else {
+            @foreach(var track in Model.bookmarkedTracks){
+                <div class="track-item-big light">
+                <a asp-action="Index" asp-controller="Track" asp-route-title="@track.name" asp-route-artist="@track.artist">
+                    @if (track.albumCoverImgUrl == null) {
+                        <img src="~/image-placeholder.webp" alt="album-cover-img" />
+                    } else {
+                        <img src="@track.albumCoverImgUrl" onerror="this.src='~/image-placeholder.webp'" alt="album-cover-img" />
+                    }
+                </a>
+                    <div>
+                        <p class="text-light text-bold text-wrap">@track.artist</p>
+                        <p class="text-light text-wrap">@track.name</p>
+                    </div>
+                    <form asp-action="BookmarkRedirect" asp-controller="Track" method="post" asp-antiforgery="true">
+                        <input type="hidden" name="state" value="1" />
+                        <input type="hidden" name="trackId" value="@track.id" />
+                        <input type="hidden" name="returnUrl" value="@Context.Request.Path" />
+                        <button class="bookmark-button" type="submit">
+                            <img src="~/bookmark-icon-selected.webp" width="35" alt="bookmark-icon" />
+                        </button>
+                    </form>
+                </div>
+            }
+        }
+    </div>
+
+    <div class="pagination-container">
+        @if (Model.bookmarkedTracks.HasPreviousPage) {
+            <a asp-action="Described" asp-controller="User" asp-route-PageNumber="@(Model.bookmarkedTracks.PageIndex - 1)">
+                <img src="~/arrow-icon-left.webp" alt="arrow-to-left-icon" style="width: 15px; display: block; margin-right: 5px;" />
+            </a>
+        }
+        @if (Model.totalPages != 1) {
+            @for (int i = 1; i <= Model.totalPages; i++) {
+                <a asp-action="Described" asp-controller="User" asp-route-PageNumber="@i"
+                   class="page-number@(i == Model.currentPage ? "" : " disabled")">
+                    @i
+                </a>
+            }
+        }
+        @if (Model.bookmarkedTracks.HasNextPage) {
+            <a asp-action="Described" asp-controller="User" asp-route-PageNumber="@(Model.bookmarkedTracks.PageIndex + 1)">
+                <img src="~/arrow-icon-right.webp" alt="arrow-to-right-icon" style="width: 15px; display: block; margin-left: 5px;" />
+            </a>
+        }
+    </div>
+    </div>
+}

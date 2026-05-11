@@ -1,0 +1,105 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - FindYourMusic</title>
+    @* <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" /> *@
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    @* <link rel="stylesheet" href="~/FindYourMusic.styles.css" asp-append-version="true" /> *@
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <a class="navbar-brand link" asp-area="" asp-controller="Home" asp-action="Index">FindYourMusic</a>
+            <div class="navbar-links">   
+                <div class="nav-item">
+                    <a class="link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                </div>
+                @if (User.Identity.IsAuthenticated) {
+                    <div class="nav-item">
+                        <a class="link" asp-area="" asp-controller="User" asp-action="Index">Profile</a>
+                    </div>
+                    <div class="nav-item">
+                        <a class="link" asp-area="" asp-controller="Describe" asp-action="Index">Describe</a>
+                    </div>
+                }
+                <div class="nav-item">
+                    <a class="link" asp-area="" asp-controller="Search" asp-action="Index">Search</a>
+                </div>
+                <div class="nav-item">
+                    <a class="link" asp-area="" asp-controller="About" asp-action="Index">About</a>
+                </div>
+                @if (!User.Identity.IsAuthenticated){
+                    <div class="nav-item">
+                        <a class="link" asp-area="" asp-controller="Authentication" asp-action="Index" asp-route-view="signup">Sign Up</a>
+                    </div>
+                    <div class="nav-item">
+                        <a class="link" asp-area="" asp-controller="Authentication" asp-action="Index">Login</a>
+                    </div>
+                }
+            </div>
+            @* <p id="navbar-dropdown-button" class="link">@User.Identity.Name</p> *@
+            <img id="navbar-dropdown-button" src="~/nav-burger-menu.webp" />
+        </nav>
+        <div id="navbar-dropdown">
+            <a class="link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+            @if (User.Identity.IsAuthenticated){
+                <a class="link" asp-area="" asp-controller="User" asp-action="Index">Profile</a>
+                <a class="link" asp-area="" asp-controller="Describe" asp-action="Index">Describe</a>
+            }
+            <a class="link" asp-area="" asp-controller="Search" asp-action="Index">Search</a>
+            <a class="link" asp-area="" asp-controller="About" asp-action="Index">About</a>
+            @if (!User.Identity.IsAuthenticated){
+                <a class="link" asp-area="" asp-controller="Authentication" asp-action="Index" asp-route-view="signup">Sign Up</a>
+                <div id="navbar-dropdown-divider"></div>
+                <a class="button" asp-area="" asp-controller="Authentication" asp-action="Index">Login</a>
+            } else {
+                <div id="navbar-dropdown-divider"></div>
+                <form asp-action="Logout" asp-controller="Authentication" method="post" asp-antiforgery="true">
+                    <button class="button" type="submit">Logout</button>
+                </form>
+            }
+        </div>
+    </header>
+    <div class="container">
+        <main role="main">
+            @RenderBody()
+            <div class="page-bottom-divider"></div>
+        </main>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-inner-container">
+            <div class="footer-brands-container">
+                <h3>FindYourMusic</h3>
+                <h4><a class="link" target="_blank" href="https://www.last.fm/api">last.fm</a></h4>
+            </div>
+            <div class="footer-links-container">
+                <p><b>Navigation</b></p>
+                <a class="link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                @if (User.Identity.IsAuthenticated){
+                    <a class="link" asp-area="" asp-controller="Describe" asp-action="Index">Describe</a>
+                }
+                <a class="link" asp-area="" asp-controller="Search" asp-action="Index">Search</a>
+                <a class="link" asp-area="" asp-controller="About" asp-action="Index">About</a>
+                @if (!User.Identity.IsAuthenticated){
+                    <a class="link" asp-area="" asp-controller="Authentication" asp-action="Index" asp-route-view="signup">Sign Up</a>
+                    <a class="link" asp-area="" asp-controller="Authentication" asp-action="Index">Login</a>
+                }
+            </div>
+        </div>
+        <div id="footer-divider"></div>
+        <p id="copyright-text"><b>&copy; FindYourMusic - 2026</b></p>    
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/navbar-dropdown.js" asp-append-version="true"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

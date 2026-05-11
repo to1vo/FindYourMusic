@@ -1,0 +1,28 @@
+﻿@model LoginViewModel
+
+<h1 id="form-title" class="text-center">Login</h1>
+
+@if (TempData["error"] != null) {
+	<p class="message text-error text-center">@TempData["error"]</p>
+}
+@if (TempData["success"] != null) {
+	<p class="message text-success text-center">@TempData["success"]</p>
+}
+
+<form id="Login" asp-controller="Authentication" asp-action="Login" method="post" asp-antiforgery="true">
+	<div class="form-item">
+		<label class="text-light" asp-for="username"></label>
+		<span class="form-error text-error" asp-validation-for="username"></span>
+		<input asp-for="username" placeholder="Username..." autocomplete="off" />
+	</div>
+
+	<div class="form-item">
+		<label class="text-light" asp-for="password"></label>
+		<span class="form-error text-error" asp-validation-for="password"></span>
+		<input asp-for="password" placeholder="********" />
+	</div>
+
+	<div class="form-item">
+		<button class="button" type="submit">Login</button>
+	</div>
+</form>

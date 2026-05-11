@@ -1,0 +1,31 @@
+﻿@model SignUpViewModel
+
+<h1 id="form-title" class="text-center">Sign Up</h1>
+
+@if (TempData["error"] != null) {
+	<p class="message text-error text-center">@TempData["error"]</p>
+}
+
+<form id="Signup" asp-controller="Authentication" asp-action="SignUp" method="post" asp-antiforgery="true">
+	<div class="form-item">
+		<label class="text-light" asp-for="username"></label>
+		<span class="form-error text-error" asp-validation-for="username"></span>
+		<input asp-for="username" placeholder="Username..." autocomplete="off" />
+	</div>
+
+	<div class="form-item">
+		<label class="text-light" asp-for="password"></label>
+		<span class="form-error text-error" asp-validation-for="password"></span>
+		<input asp-for="password" placeholder="********" />
+	</div>
+
+	<div class="form-item">
+		<label class="text-light" asp-for="passwordConfirmation"></label>
+		<span class="form-error text-error" asp-validation-for="passwordConfirmation"></span>
+		<input asp-for="passwordConfirmation" placeholder="********" />
+	</div>
+	<div class="form-item">
+		<button class="button" type="submit">Sign Up</button>
+	</div>
+</form>
+

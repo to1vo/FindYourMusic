@@ -1,0 +1,118 @@
+﻿@model HomeViewModel
+
+@{
+    ViewData["Title"] = "Home";
+}
+
+<div class="page-container">
+    @if (User.Identity.IsAuthenticated){
+        <h1 class="page-title text-center">Welcome back, @User.Identity.Name</h1>
+        <p class="page-information text-light text-center">This frontpage is customized based on your own descriptions</p>
+		<div class="home-container">
+		<div class="basic-container home-recently-described-container">
+			<h2 class="text-light">Recommended for you</h2>
+			@if (TempData["error-state"] != null) {
+				<p class="text-error no-data-text">@TempData["error-state"]</p>
+			} else {
+			<div class="track-item-big-container">
+				@if(Model.recommendedTracks.Count() == 0){
+					<p class="text-light no-data-text">No recommendations yet</p>
+				} else {
+						@foreach (var track in Model.recommendedTracks) {
+						<div class="track-item-big">
+							<a asp-action="Index" asp-controller="Track" asp-route-title="@track.name" asp-route-artist="@track.artist">
+								@if (track.albumCoverImgUrl == null) {
+									<img src="~/image-placeholder.webp" alt="album-cover-img" />
+								} else {
+									<img src="@track.albumCoverImgUrl" onerror="this.src='~/image-placeholder.webp'" alt="album-cover-img" />
+								}
+							</a>
+							<div>
+								<p class="text-light text-bold text-wrap">@track.name</p>
+								<p class="text-light text-wrap">@track.artist</p>
+							</div>
+							<form asp-action="BookmarkRedirect" asp-controller="Track" method="post" asp-antiforgery="true">
+								<input type="hidden" name="state" value="0" />
+								<input type="hidden" name="trackId" value="@track.id" />
+								<input type="hidden" name="returnUrl" value="@Context.Request.Path" />
+								<button class="bookmark-button" type="submit">
+									<img src="~/bookmark-icon.webp" alt="bookmark-icon" />
+								</button>
+							</form>
+						</div>
+					}
+				}
+			</div>
+			}
+			<div class="visual-rectangle right"></div>
+		</div>
+		<div id="home-divider"></div>
+		<div class="basic-container home-recently-described-container">
+			<h2 class="text-light">Recently described</h2>
+			@if (TempData["error-state"] != null) {
+				<p class="text-error no-data-text">@TempData["error-state"]</p>
+			} else {
+			<div class="track-item-big-container">
+				@foreach (var track in Model.recentlyDescribedTracks) {
+					<div class="track-item-big">
+						<a asp-action="Index" asp-controller="Track" asp-route-title="@track.name" asp-route-artist="@track.artist">
+							@if (track.albumCoverImgUrl == null) {
+								<img src="~/image-placeholder.webp" alt="album-cover-img" />
+							} else {
+								<img src="@track.albumCoverImgUrl" onerror="this.src='~/image-placeholder.webp'" alt="album-cover-img" />
+							}
+						</a>
+						<div>
+							<p class="text-light text-bold text-wrap">@track.name</p>
+							<p class="text-light text-wrap">@track.artist</p>
+						</div>
+					</div>		
+				}
+				</div>
+			}
+			<div class="visual-rectangle left"></div>
+		</div>
+		</div>
+	} else {
+        <div class="home-website-info">
+            <h1 class="page-title">Music For The Moment</h1>
+            <p class="text-light">A website where people can find tracks by describing the music, not with genre but with feelings, environment and sound type. This helps people find new music that they would otherwise never hear.</p>
+            <a class="button" asp-action="Index" asp-controller="Search">Start searching</a>
+        </div>
+		<img id="category-texts-img" src="~/category-texts.webp" alt="image-of-category-names" />
+		<div class="home-lower-container">
+			<div class="basic-container home-recently-described-container">
+				<h2 class="text-light">Recently described</h2>
+				@if(TempData["error-state"] != null){
+					<p class="text-error no-data-text">@TempData["error-state"]</p>
+				} else {
+				<div class="track-item-big-container">
+						@foreach (var track in Model.recentlyDescribedTracks.Select((value, i) => new { i, value })) {
+							@if(track.i < 4){
+								<div class="track-item-big">
+									<a asp-action="Index" asp-controller="Track" asp-route-title="@track.value.name" asp-route-artist="@track.value.artist">
+										@if (track.value.albumCoverImgUrl == null) {
+											<img src="~/image-placeholder.webp" alt="album-cover-img" />
+										} else {
+											<img src="@track.value.albumCoverImgUrl" onerror="this.src='~/image-placeholder.webp'" alt="album-cover-img" />
+										}
+									</a>
+									<div>
+										<p class="text-light text-bold text-wrap">@track.value.name</p>
+										<p class="text-light text-wrap">@track.value.artist</p>
+									</div>
+								</div>
+							}
+						}
+					</div>
+					}
+				<div class="visual-rectangle left"></div>
+			</div>
+			<div class="home-login-container">
+				<div id="home-login-rectangle"></div>
+				<h3 class="text-light">Want to describe your favorite tracks?</h3>
+				<a class="button" asp-action="Index" asp-controller="Authentication">Login</a>
+			</div>
+		</div>
+    }
+</div>

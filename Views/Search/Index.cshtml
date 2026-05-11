@@ -1,0 +1,58 @@
+﻿@model SearchViewModel
+
+@{
+	ViewData["title"] = "Search";
+}
+
+
+@if(TempData["error-state"] != null){
+	<p class="text-error text-center">@TempData["error-state"]</p>
+} else {
+<h1 class="page-title text-center">What are you looking for?</h1>
+<p class="text-light text-center page-information">Start by selecting maximum of 4 categories from any of the groups and you’ll get results based on tracks that are described like that by other people.</p>
+
+@if(TempData["error"] != null){
+	<p class="text-error text-center message">@TempData["error"]</p>
+}
+
+<div class="page-container search-container">
+	<div class="category-group-container">
+		@foreach (var group in Model.categoryGroups) {
+			<div class="category-group text-light text-center" id="@group.id">@group.name</div>
+		}
+	</div>
+
+	<div class="category-container">
+		@foreach (var group in Model.categoryGroups) {
+			<div class="category-item-container" id="@group.id">
+				@foreach (var category in Model.categories) {
+					@if (category.categoryGroupId == group.id) {
+						@if (Model.previouslySelectedCategories.Contains(category.id)){
+							<div class="category-item selected text-light" id="@category.id" data-name="@category.name">
+								<p>@category.emoji</p>
+								<p>@category.name</p>
+							</div>
+						} else {
+							<div class="category-item text-light" id="@category.id" data-name="@category.name">
+								<p>@category.emoji</p>
+								<p>@category.name</p>
+							</div>
+						}
+					}
+				}
+			</div>
+		}
+	</div>
+
+	<div>
+		<p id="categories-selected" class="text-center text-light">0/4</p>
+		<form id="describe-form" asp-action="Results" asp-controller="Search" method="get">
+			<button class="button" type="submit">Search</button>
+		</form>
+	</div>
+</div>
+
+@section Scripts {
+	<script src="~/js/category-selection.js"></script>
+}
+}

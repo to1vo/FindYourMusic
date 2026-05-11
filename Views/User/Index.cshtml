@@ -1,0 +1,141 @@
+﻿@model UserProfileViewModel
+
+@{
+	ViewData["title"] = User.Identity.Name;
+}
+
+@if(TempData["error-state"] != null) {
+	<p class="text-error text-center">@TempData["error-state"]</p>
+} else {
+	@if(TempData["error"] != null){
+		<p class="text-error text-center message">@TempData["error"]</p>
+	}
+	<div class="page-container">
+	<div class="user-information-container">
+		<div>
+			<h1 class="page-title">@User.Identity.Name</h1>
+			<a class="button" asp-area="" asp-action="Edit" asp-controller="User">Edit</a>
+		</div>
+		<p class="text-light">Tracks described <b class="text-secondary">@Model.tracksDescribed</b></p>
+	</div>
+
+	<div class="user-view-selection-container text-light">
+		<a class="user-view-link link selected" asp-area="" asp-action="Index" asp-controller="User">
+			Profile
+			<div class="category-group-selection-bar"></div>
+		</a>
+		<a class="user-view-link link" asp-area="" asp-action="Bookmarked" asp-controller="User">Bookmarked</a>
+		<a class="user-view-link link" asp-area="" asp-action="Described" asp-controller="User">Described</a>
+	</div>
+
+	<div>
+		<h2 class="text-light">Recent activity</h2>
+		@if (Model.recentDescriptionItems.Count() == 0){
+			 <p class="text-light">No recent acticity</p>
+		} else {
+			<div class="user-recent-activity-container">
+			@foreach(var descriptionItem in Model.recentDescriptionItems){
+                <a asp-action="Index" asp-controller="Track" asp-route-title="@descriptionItem.title" asp-route-artist="@descriptionItem.artist">
+					<div class="track-description-item">
+						@if (descriptionItem.albumCoverImgUrl == null) {
+							<img src="~/image-placeholder.webp" alt="album-cover-img" />
+						} else {
+							<img src="@descriptionItem.albumCoverImgUrl" onerror="this.src='~/image-placeholder.webp'" alt="album-cover-img" />
+						}
+						<div class="track-title-artist-container">
+							<p class="text-light text-wrap">@descriptionItem.title</p>
+							<p class="text-secondary text-wrap">@descriptionItem.categories</p>
+						</div>
+						<p class="emojis">@descriptionItem.emojis</p>
+					</div>
+				</a>
+			}
+			</div>
+		}
+	</div>
+	<div class="user-lower-container">
+		<div class="basic-container user-bookmarked-container">
+			<h2 class="text-light">Bookmarked</h2>
+			@if(Model.recentBookmarks.Count() == 0) {
+					<p class="text-light no-data-text">No bookmarkings</p>
+				} else {
+				@if(Model.bookmarkAmount > 4){
+					<a id="see-all-bookmarkings-link" class="text-accent" asp-area="" asp-action="Bookmarked" asp-controller="User">See all</a>	
+				}
+				<div class="track-item-big-container">
+				@foreach(var bookmarkItem in Model.recentBookmarks){
+					<div class="track-item-big">
+					<a asp-action="Index" asp-controller="Track" asp-route-title="@bookmarkItem.name" asp-route-artist="@bookmarkItem.artist">
+						@if (bookmarkItem.albumCoverImgUrl == null) {
+							<img src="~/image-placeholder.webp" alt="album-cover-img" />
+						} else {
+							<img src="@bookmarkItem.albumCoverImgUrl" onerror="this.src='~/image-placeholder.webp'" alt="album-cover-img" />
+						}
+					</a>
+						<div>
+							<p class="text-light text-bold text-wrap">@bookmarkItem.name</p>
+							<p class="text-light text-wrap">@bookmarkItem.artist</p>
+						</div>
+						<form asp-action="BookmarkRedirect" asp-controller="Track" method="post" asp-antiforgery="true">
+							<input type="hidden" name="state" value="1" />
+							<input type="hidden" name="trackId" value="@bookmarkItem.id" />
+							<input type="hidden" name="returnUrl" value="@Context.Request.Path" />
+							<button class="bookmark-button" type="submit">
+								<img src="~/bookmark-icon-selected.webp" alt="bookmark-icon" />
+							</button>
+						</form>
+					</div>
+				}
+				</div>
+			}
+			<div class="visual-rectangle right"></div>
+		</div>
+
+		<div class="basic-container chart-container user-favorite-categories-container">
+			<h2 class="text-light text-center">Favorite categories</h2>
+			@if(Model.favoriteCategories.Count() == 0) {
+				<p class="text-light no-data-text">You haven't described any tracks yet</p>
+			} else {
+				<div class="category-titles">
+					@for(int i=0; i<Model.favoriteCategories.Count(); i++){
+						<p id="category-title-@(i+1)">@Model.favoriteCategories[i].name</p>
+					}
+				</div>
+				<canvas id="favorite-categories-canvas" width="200" height="200"></canvas>
+			}
+		</div>
+	</div>
+	</div>
+
+@section Scripts {
+	<script>
+		const ctx = document.querySelector("#favorite-categories-canvas");
+		if(ctx){
+			new Chart(ctx, {
+				type: "doughnut",
+				data: {
+					datasets: [{
+						data: @Model.favoriteCategoriesData,
+						backgroundColor: [
+							'#A09CFB',
+							'#FF3FE5',
+							'#FF5353',
+							'#45DBCB',
+						],
+						borderColor: "#F2F3EE",
+						hoverOffset: 4
+					}]
+				},
+				options: {
+					responsive: false,
+					plugins: {
+						tooltip: {
+							enabled: false
+						}
+					}
+				}
+			});
+		}
+	</script>
+}
+}

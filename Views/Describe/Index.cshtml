@@ -1,0 +1,68 @@
+﻿@model List<TrackResult>
+
+@{
+	ViewData["title"] = "Select track";
+}
+
+<h1 class="page-title text-center">Select a track</h1>
+
+<form id="track-selection-form" asp-action="Index" asp-controller="Describe" method="get">
+	<div class="form-item">
+		<input id="query-input" name="query" type="text" autocomplete="off" placeholder="Track or artist name..." />
+	</div>
+	<div class="form-item">
+		<button class="button" type="submit">Search</button>
+	</div>
+</form>
+
+
+@if(TempData["error"] != null) {
+	<p class="text-error text-center message">@TempData["error"]</p>
+}
+<div class="page-container">
+	<div id="results-divider"></div>
+	<p id="loading-indicator" class="text-center text-light">Loading...</p>
+	<div class="track-results-container">
+		@if(Model != null){
+			@if(Model.Count == 0) {
+				<p class="text-light text-center">No results</p>
+				<br/>
+				<p class="text-light text-center">Can't find what you are looking for? Add it manually from <a class="link text-accent" asp-area="" asp-controller="Describe" asp-action="AddManual">here</a></p>
+			} else {
+				@for(int i=0; i<Model.Count(); i++){
+					<a asp-area="" asp-controller="Describe" asp-action="Add" asp-route-track="@Model[i].name" asp-route-artist="@Model[i].artist" asp-route-gobackUrl="@(Context.Request.Path.ToString() + Context.Request.QueryString)">
+						<div class="track-result text-light">
+							<p class="result-number text-center">@(i + 1)</p>
+							<div class="track-result-divider"></div>
+							<div>
+								<p class="text-wrap"><b>@Model[i].name</b></p>
+								<p class="text-wrap">@Model[i].artist</p>
+							</div>
+							<img src="~/arrow-icon-right.webp" alt="arrow-icon" />
+						</div>
+					</a>
+				}
+			}
+		}
+	</div>
+</div>
+
+@section Scripts {
+	<script>
+		const form = document.querySelector("#track-selection-form");
+		const loading_indicator = document.querySelector("#loading-indicator");
+		const query_input = document.querySelector("#query-input");
+		const track_results_container = document.querySelector(".track-results-container");
+		
+		const handle_form_submit = (e) => {
+			if(query_input.value.trim() === ""){
+				e.preventDefault();
+				return;
+			}
+			track_results_container.textContent = "";
+			loading_indicator.classList.add("show");
+		}
+
+		form.addEventListener("submit", (e) => handle_form_submit(e));
+	</script>
+}

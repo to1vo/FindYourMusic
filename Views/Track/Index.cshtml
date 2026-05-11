@@ -1,0 +1,180 @@
+﻿@model TrackViewModel
+
+@{
+	ViewData["title"] = "Track";
+}
+
+@if(TempData["error-state"] != null) {
+	<p class="text-error text-center">@TempData["error-state"]</p>
+} else {
+@if(TempData["error"] != null) {
+	<p class="text-error text-center message">@TempData["error"]</p>
+}
+@if(TempData["gobackUrl"] != null){
+	<a href="@TempData["gobackUrl"]"><img id="go-back-icon" src="~/arrow-icon-left.webp" /></a>
+}
+<div class="page-container">
+	<div class="track-upper-container">
+		@if (Model.track.albumCoverImgUrl == null) {
+			<img id="track-page-album-img" src="~/image-placeholder.webp" alt="album-cover-img" />
+		} else {
+			<img id="track-page-album-img" src="@Model.track.albumCoverImgUrl" onerror="this.src='~/image-placeholder.webp'" alt="album-cover-img" />
+		}
+		<div class="track-information-container">
+			<div class="track-page-title-container">
+				<h1 id="track-page-title" class="text-secondary">@Model.track.name</h1>
+				<p class="text-light">by <b>@Model.track.artist</b></p>
+			</div>
+			<div class="text-light">
+				<div id="track-information-container">
+					@if(Model.track.album != null){
+						<p class="track-information"><b>Album</b>: @Model.track.album</p>
+					}
+					@if (Model.track.year != null) {
+						<p class="track-information"><b>Year</b>: @Model.track.year</p>
+					}
+					@if (Model.track.duration != null) {
+						<p class="track-information"><b>Duration</b>: @Model.track.duration</p>
+					}
+				</div>
+				@if (User.Identity.IsAuthenticated){
+					<form id="bookmark-form" asp-action="Bookmark" asp-controller="Track" method="post" asp-antiforgery="true">
+						<input id="bookmark-toggle-input" type="hidden" name="state" value="@(Model.isBookMarked == true ? 1 : 0)" />
+						<input type="hidden" name="trackId" value="@Model.track.id"/>
+						<button id="track-bookmark-button" class="bookmark-button" type="submit">
+							<img class="bookmark-icon" src="~/bookmark-icon.webp" alt="bookmark-icon" />		
+						</button>
+					</form>
+				}
+			</div>
+		</div>
+		@if (User.Identity.IsAuthenticated){
+			<div class="track-page-user-categorization">
+				@if(Model.userCategories.Count() == 0){
+					<h2 class="text-center text-light">Know this track?</h2>
+					<a id="track-describe-button" class="button" asp-action="Add" asp-controller="Describe" asp-route-track="@Model.track.name" asp-route-artist="@Model.track.artist" asp-route-gobackUrl="@(Context.Request.Path.ToString() + Context.Request.QueryString)">Describe it</a>
+				} else{
+					<h2 class="text-light text-center">Your description</h2>
+					<div class="category-container">
+						<div class="category-item-container selected">
+							@foreach (var category in Model.userCategories) {
+								<div class="category-item selected">
+									<p>@category.emoji</p>
+									<p>@category.name</p>
+								</div>
+							}
+						</div>
+					</div>
+					<a class="button" asp-action="Add" asp-controller="Describe" asp-route-track="@Model.track.name" asp-route-artist="@Model.track.artist" asp-route-gobackUrl="@(Context.Request.Path.ToString() + Context.Request.QueryString)">Edit</a>
+				}
+			</div>
+		}
+	</div>
+	<div class="track-lower-container">
+		<div class="basic-container chart-container">
+			<h2 class="text-light text-center">Common categories</h2>
+				<div class="category-titles">
+					@for (int i=Model.top4Categories.Count()-1; i>=0; i--) {
+					<p id="category-title-@(i+1)">@Model.top4Categories[i].name</p>
+				}
+				</div>
+			<canvas id="favorite-categories-canvas" width="200" height="200"></canvas>
+			<p id="see-all-categories" class="link text-accent">See all</p>
+			<div id="track-all-categories-container">
+				@foreach(var category in Model.allUsedCateogories){
+					<div class="text-light">
+						<p>@category.name</p> 
+						<p class="text-secondary">@category.amount</p>
+					</div>
+				}
+			</div>
+		</div>
+		<div class="basic-container similar-track-container text-light">
+			<h2>Similar tracks</h2>
+			<div class="track-item-big-container">
+				@if(Model.similarTracks.Count() == 0){
+					<p class="text-center no-data-text">This track seems to be too unique</p>
+				} else {
+					@foreach(var similarTrack in Model.similarTracks){
+						<div class="track-item-big">
+						<a asp-action="Index" asp-controller="Track" asp-route-title="@similarTrack.name" asp-route-artist="@similarTrack.artist">
+							@if (similarTrack.albumCoverImgUrl == null) {
+								<img src="~/image-placeholder.webp" alt="album-cover-img" />
+							} else {
+								<img src="@similarTrack.albumCoverImgUrl" onerror="this.src='~/image-placeholder.webp'" alt="album-cover-img" />
+							}
+						</a>
+							<div>
+								<p class="text-light text-bold text-wrap">@similarTrack.name</p>
+								<p class="text-light text-wrap">@similarTrack.artist</p>
+							</div>
+							@if (User.Identity.IsAuthenticated){
+								<form id="bookmark-form" asp-action="Bookmark" asp-controller="Track" method="post" asp-antiforgery="true">
+									<input id="bookmark-toggle-input" type="hidden" name="state" value="@(Model.bookmarkedTracks.Contains(similarTrack) ? "1" : "0")" />
+									<input type="hidden" name="trackId" value="@similarTrack.id" />
+									<input type="hidden" name="returnUrl" value="@(Context.Request.Path.ToString() + Context.Request.QueryString)" />
+									<button id="track-bookmark-button" class="bookmark-button" type="submit">
+										@if (Model.bookmarkedTracks.Contains(similarTrack)){
+											<img src="~/bookmark-icon-selected.webp" alt="bookmark-icon" />
+										} else {
+											<img src="~/bookmark-icon.webp" alt="bookmark-icon" />		
+										}
+									</button>
+								</form>
+							}
+						</div>
+					}
+				}
+			</div>
+			<div class="visual-rectangle right"></div>
+		</div>
+	</div>
+</div>
+}
+
+@section Scripts {
+	<script src="~/js/bookmark.js"></script>
+	<script>
+		const ctx = document.querySelector("#favorite-categories-canvas");
+		const all_categories_container = document.querySelector("#track-all-categories-container");
+		const see_all_categories_button = document.querySelector("#see-all-categories");
+
+		if(ctx){
+			new Chart(ctx, {
+				type: "doughnut",
+				data: {
+					datasets: [{
+						data: @Model.top4CategoriesData,
+						backgroundColor: [
+							'#A09CFB',
+							'#FF3FE5',
+							'#FF5353',
+							'#45DBCB',
+						],
+						borderColor: "#F2F3EE",
+						hoverOffset: 4
+					}]
+				},
+				options: {
+					responsive: false,
+					plugins: {
+						tooltip: {
+							enabled: false
+						}
+					}
+				}
+			});
+		}
+
+		const toggle_all_categories = () => {
+			if(!all_categories_container) return;
+			if(all_categories_container.classList.contains("show")){
+				all_categories_container.classList.remove("show");
+			} else {
+				all_categories_container.classList.add("show");
+			}
+		}
+
+		see_all_categories_button.addEventListener("click", () => toggle_all_categories());
+	</script>
+}

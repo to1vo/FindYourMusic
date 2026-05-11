@@ -1,0 +1,23 @@
+﻿@model UserEditViewModel
+
+@{
+    ViewData["title"] = "Edit user";    
+}
+
+<div class="form-container">
+    <h1 class="text-center">Edit username</h1>
+	@if (TempData["error"] != null) {
+		<p class="text-error text-center message">@TempData["error"]</p>
+	}
+
+	<form asp-controller="User" asp-action="Edit" method="post" asp-antiforgery="true">
+		<div class="form-item">
+			<label class="text-light" asp-for="username"></label>
+			<span class="form-error text-error" asp-validation-for="username"></span>
+			<input asp-for="username" placeholder="New username..." autocomplete="off" />
+		</div>
+		<div class="form-item">
+			<button class="button" type="submit">Update</button>
+		</div>
+	</form>
+</div>

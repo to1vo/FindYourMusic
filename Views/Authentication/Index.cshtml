@@ -1,0 +1,115 @@
+﻿@{
+	ViewData["Title"] = "Authentication";
+}
+
+
+<div class="form-container">
+	<div class="partial-form-selection">
+		@if(TempData["partial"] != null && (string)TempData["partial"] == "signup"){
+			<div id="Login" class="form-selection-button">Login</div>
+			<div id="Signup" class="form-selection-button active">Sign Up</div>
+		} else {
+			<div id="Login" class="form-selection-button active">Login</div>
+			<div id="Signup" class="form-selection-button">Sign Up</div>
+		}
+	</div>
+	<div class="partial-form-container">
+		@if(TempData["partial"] != null && (string)TempData["partial"] == "signup"){
+			<partial name="_SignUp"></partial>
+		} else {
+			<partial name="_Login"></partial>		
+		}
+	</div>
+</div>
+
+@section Scripts {
+	<script>
+		const form_selection_buttons = document.querySelectorAll(".form-selection-button");
+		const partial_form_container = document.querySelector(".partial-form-container");
+
+		const handle_form_state = async (e) => {
+			let endpoint;
+			if(e.target.id === "Login"){
+				endpoint = "/_Login";
+			} else if(e.target.id === "Signup"){
+				endpoint = "/_Signup";
+			} else {
+				return;
+			}
+
+			try {
+				const response = await fetch(endpoint);
+				if(response.ok){
+					const data = await response.text();
+					partial_form_container.innerHTML = data;
+					const activeBtn = document.querySelector(".form-selection-button.active");
+					if(activeBtn){
+						activeBtn.classList.remove("active");
+						e.target.classList.add("active");
+					}
+				} else {
+					showErrorMessage();
+				}
+			} catch(err){
+				console.log(err);
+				showErrorMessage();
+			}
+		}
+
+		const handle_form_send = async (e) => {
+			e.preventDefault();
+			let endpoint;
+			
+			if(e.target.id === "Login") {
+				endpoint = "/Login";
+			} else if(e.target.id === "Signup") {
+				endpoint = "/Signup";
+			} else {
+				return;
+			}
+
+			const form_data = new FormData(e.target);
+
+			try {
+				const response = await fetch(endpoint, {
+					method: "post",
+					body: form_data
+				});
+				if(response.ok){
+					const content_type = response.headers.get("content-type");
+					if(content_type && content_type.includes("application/json")){
+						const data = await response.json();
+						if(data.redirectUrl) window.location.href = data.redirectUrl;
+						return;
+					}
+					const data = await response.text();
+					partial_form_container.innerHTML = data;
+					removeMessages();
+				} else {
+					showErrorMessage();
+				}
+			} catch(err){
+				console.log(err);
+				showErrorMessage();
+			}
+		}
+
+		const removeMessages = () => {
+			const messages = document.querySelectorAll(".message");
+			messages.forEach(m => setTimeout(() => m.remove(), 4000));
+		}
+
+		const showErrorMessage = () => {
+			const page_title = document.querySelector("#form-title");
+			if(page_title){
+				page_title.insertAdjacentHTML("afterend", "<p class='error message'>Something went wrong</p>");
+			}
+			removeMessages();
+		}
+
+		form_selection_buttons.forEach(btn => btn.addEventListener("click", (e) => handle_form_state(e)));
+		if(partial_form_container){
+			partial_form_container.addEventListener("submit", (e) => handle_form_send(e));
+		}
+	</script>
+}

@@ -1,0 +1,56 @@
+﻿@model AddTrackViewModel
+
+@{
+	ViewData["title"] = "Add track";
+}
+
+
+
+<div class="form-container">
+	<h1 class="text-center">Add track</h1>
+	@if (TempData["error"] != null) {
+		<p class="message text-error text-center">@TempData["error"]</p>
+	}
+	<form asp-controller="Describe" asp-action="AddManual" method="post" asp-antiforgery="true">
+		<div class="form-item">
+			<label class="text-light" asp-for="title"></label>
+			<span class="form-error text-error" asp-validation-for="title"></span>
+			<input asp-for="title" placeholder="Title of the track" autocomplete="off" />
+		</div>
+
+		<div class="form-item">
+			<label class="text-light" asp-for="artist"></label>
+			<span class="form-error text-error" asp-validation-for="artist"></span>
+			<input asp-for="artist" placeholder="Artist name" autocomplete="off" />
+		</div>
+
+		<div class="form-item">
+			<label class="text-light" asp-for="duration"></label>
+			<span class="form-error text-error" asp-validation-for="duration"></span>
+			<input asp-for="duration" placeholder="2:32" autocomplete="off" />
+		</div>
+
+		<div class="form-item">
+			<label class="text-light" asp-for="year"></label>
+			<span class="form-error text-error" asp-validation-for="year"></span>
+			<input asp-for="year" placeholder="1993" autocomplete="off" />
+		</div>
+
+		<div class="form-item">
+			<label class="text-light" asp-for="album"></label>
+			<span class="form-error text-error" asp-validation-for="album"></span>
+			<input asp-for="album" placeholder="The album the track is from" autocomplete="off" />
+		</div>
+
+		<div class="form-item">
+			<label class="text-light" asp-for="albumCoverImgUrl"></label>
+			<span class="form-error text-error" asp-validation-for="albumCoverImgUrl"></span>
+			<input asp-for="albumCoverImgUrl" placeholder="https://somewhere/album-cover.jpg" autocomplete="off" />
+		</div>
+
+		<div class="form-item">
+			<button class="button" type="submit">Add</button>
+		</div>
+	</form>
+
+</div>

@@ -1,0 +1,105 @@
+﻿@model DescribeTrackViewModel
+
+@{
+	ViewData["title"] = "Describe track";
+}
+
+@if(TempData["error-state"] != null){
+	<p class="text-error text-center">@TempData["error-state"]</p>
+} else {
+	if(TempData["gobackUrl"] != null){
+		<a href="@TempData["gobackUrl"]"><img id="go-back-icon" src="~/arrow-icon-left.webp" /></a>
+	}
+<h1 class="page-title text-center">Describe the track</h1>
+<p class="page-information text-light text-center">Note that some of the fields can be missing.</p>
+
+@if(TempData["success"] != null){
+	<p class="text-success text-center message">@TempData["success"]</p>	
+}
+@if(TempData["error"] != null){
+	<p class="text-error text-center message">@TempData["error"]</p>
+} 
+
+@if(Model != null)
+{
+	<div class="page-container describe-track-container ">
+	<div class="describe-track-information-container text-light">
+		<div class="describe-track-album-cover-wrapper">
+			<div class="describe-track-information">
+				<div>
+					<h2>@Model.trackInfo.name</h2>
+					<p>@Model.trackInfo.artist</p>
+				</div>
+				<div>
+					@if(Model.trackInfo.album != null){
+						<p><b>Album:</b> @Model.trackInfo.album</p>
+					}
+					@if(Model.trackInfo.year != null){
+						<p><b>Year:</b> @Model.trackInfo.year</p>
+					}
+					@if(Model.trackInfo.duration != null){
+						<p><b>Duration:</b> @Model.trackInfo.duration</p>
+					}
+				</div>
+			</div>
+			@if(Model.trackInfo.albumCoverImgUrl == null){
+				<img src="~/image-placeholder.webp" alt="album-cover" />
+			} else {
+				<img src="@Model.trackInfo.albumCoverImgUrl" onerror="this.src='@Url.Content("~/image-placeholder.webp")'" alt="album-cover" />
+			}
+		</div>
+				<div class="visual-rectangle right"></div>
+	</div>
+	<div class="describe-track-category-selection">
+		<h2 class="text-light text-center">Add categories</h2>
+		<div class="category-group-container">
+			@foreach(var group in Model.categoryGroups)
+			{
+				<div class="category-group text-light text-center" id="@group.id">@group.name</div>
+			}
+		</div>
+
+		<div class="category-container">
+			@foreach(var group in Model.categoryGroups)
+			{
+				<div class="category-item-container" id="@group.id">
+			@foreach(var category in Model.categories)
+			{
+				@if(category.categoryGroupId == group.id)
+				{
+					@if (Model.previouslyAddedCategories.Count() > 0 && Model.previouslyAddedCategories.Contains(category.id))
+					{
+						<div class="category-item selected text-light" id="@category.id" data-name="@category.name">
+							<p>@category.emoji</p>
+							<p>@category.name</p>
+						</div>
+					} else
+					{
+						<div class="category-item text-light" id="@category.id" data-name="@category.name">
+							<p>@category.emoji</p>
+							<p>@category.name</p>
+						</div>			
+					}
+				}
+			}
+				</div>
+			}
+		</div>
+		<p id="categories-selected" class="text-center text-light">0/4</p>
+		<form id="describe-form" asp-action="Add" asp-controller="Describe" method="post" asp-antiforgery="true">
+			<input type="hidden" name="trackName" value="@Model.trackInfo.name" />
+			<input type="hidden" name="artist" value="@Model.trackInfo.artist"/>
+			<input type="hidden" name="duration" value="@Model.trackInfo.duration"/>
+			<input type="hidden" name="album" value="@Model.trackInfo.album"/>
+			<input type="hidden" name="albumCoverImgUrl" value="@Model.trackInfo.albumCoverImgUrl"/>
+					<input type="hidden" name="gobackUrl" value="@TempData["gobackUrl"]" />
+			<button class="button" type="submit">Describe</button>
+		</form>
+	</div>
+	</div>
+}
+
+@section Scripts {
+	<script src="~/js/category-selection.js"></script>
+}
+}

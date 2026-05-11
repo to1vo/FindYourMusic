@@ -1,0 +1,87 @@
+﻿@model SearchResultsViewModel
+
+@{
+    ViewData["title"] = "Results";
+}
+
+@if(TempData["error-state"] != null){
+    <p class="text-error text-center">@TempData["error-state"]</p>
+} else {
+@if(TempData["gobackUrl"] != null){
+    <a href="@TempData["gobackUrl"]"><img id="go-back-icon" src="~/arrow-icon-left.webp" /></a>
+}
+
+<div class="page-container">
+    <h1 class="page-title text-center">@Model.searchDescription</h1>
+    <p class="text-center text-light">These results are ordered by the similarity and amount of the categories you selected.</p>
+    <div id="results-divider"></div>
+    @if (Model.searchResults.Count() == 0) {
+        <p class="text-light text-center">No results</p>
+    } else {
+        @for (int i=0; i<Model.searchResults.Count(); i++) {
+            <div class="search-result-item">
+                <a asp-action="Index" asp-controller="Track" asp-route-title="@Model.searchResults[i].title" asp-route-artist="@Model.searchResults[i].artist" asp-route-gobackUrl="@(Context.Request.Path.ToString() + Context.Request.QueryString)">
+                    <div class="search-result-item-inner">
+                        <p class="result-number text-center text-light">@(i+1)</p>
+                        @if (Model.searchResults[i].albumCoverImgUrl == null) {
+                            <img class="search-result-album-img" src="~/image-placeholder.webp" alt="album-cover-img" />
+                        } else {
+                            <img class="search-result-album-img" src="@Model.searchResults[i].albumCoverImgUrl" onerror="this.src='~/image-placeholder.webp'" alt="album-cover-img" />
+                        }
+                        <div class="search-result-track-information">
+                            <div class="track-title-artist-container">
+                                <p class="text-light"><b>@Model.searchResults[i].title</b></p>
+                                <p class="text-light">@Model.searchResults[i].artist</p>
+                            </div>
+                            <p class="text-accent">@Model.searchResults[i].categories</p>
+                        </div>
+                    </div>    
+                </a>
+                @if (User.Identity.IsAuthenticated){
+                    <form id="bookmark-form" asp-action="Bookmark" asp-controller="Track" method="post" asp-antiforgery="true">
+                        @if(Model.bookmarkedTracks.Contains(Model.searchResults[i].trackId)){
+                            <input id="bookmark-toggle-input" type="hidden" name="state" value="1" />
+                        } else {
+                            <input id="bookmark-toggle-input" type="hidden" name="state" value="0" />
+                        }
+                        <input type="hidden" name="trackId" value="@Model.searchResults[i].trackId" />
+                        <input type="hidden" name="returnUrl" value="@(Context.Request.Path.ToString()+Context.Request.QueryString)" />
+                        <button id="track-bookmark-button" class="bookmark-button" type="submit">
+                            @if (Model.bookmarkedTracks.Contains(Model.searchResults[i].trackId)){
+                                <img class="bookmark-icon" src="~/bookmark-icon-selected.webp" alt="bookmark-icon" />
+                            } else {
+                                <img class="bookmark-icon" src="~/bookmark-icon.webp" alt="bookmark-icon" />
+                            }
+                        </button>
+                    </form>
+                }
+            </div>
+        }
+    }
+</div>
+
+<div class="pagination-container">
+    @if (Model.searchResults.HasPreviousPage) {
+        <a asp-action="Described" asp-controller="User" asp-route-PageNumber="@(Model.searchResults.PageIndex - 1)">
+            <img src="~/arrow-icon-left.webp" alt="arrow-to-left-icon" style="width: 15px; display: block; margin-right: 10px;" />
+        </a>
+    }
+    @if (Model.totalPages != 1) {
+        @for (int i = 1; i <= Model.totalPages; i++) {
+            <a asp-action="Described" asp-controller="User" asp-route-PageNumber="@i"
+               class="page-number@(i == Model.currentPage ? "" : " disabled")">
+                @i
+            </a>
+        }
+    }
+    @if (Model.searchResults.HasNextPage) {
+        <a asp-action="Described" asp-controller="User" asp-route-PageNumber="@(Model.searchResults.PageIndex + 1)">
+            <img src="~/arrow-icon-right.webp" alt="arrow-to-right-icon" style="width: 15px; display: block; margin-left: 10px;" />
+        </a>
+    }
+</div>
+}
+
+@section Scripts {
+    <script src="~/js/bookmark.js"></script>
+}
