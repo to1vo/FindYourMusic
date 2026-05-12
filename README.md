@@ -82,7 +82,7 @@ Tämän kontrollerin endpointit ovat käytössä vain kirjautuneelle käyttäjä
 Hakee kyseisen kappaleen tiedot tietokannasta sekä siihen liittyvää dataa (esim. samankaltaiset kappaleet, yleisimmät kategoriat), sisältää myös endpointit kirjanmerkin lisäykseen hyödyntäen näissä kaikissa Track- ja UserServiceä. Näkyvä sivu eroaa hieman siitä onko käyttäjä kirjautuneena. Kirjautunut käyttäjä pystyy lisäämään kappaleen kirjanmerkkeihin sekä nähdä oman kuvauksen kyseisestä kappaleesta, josta hän pääsee myös muokkaamaan sitä.
 
 ### Käyttäjän profiili - UserController
-Käyttää UserServiceä tuoden näkyviin kirjautuneeseen käyttäjään liittyvää dataa (esim. viimeisimmät kuvaukset, käytetyimmät kategoriat). Sisältää neljä eri viewiä: profiili, kirjanmerkit, kuvaukset sekä käyttäjänimen muokkaus.
+Käyttää UserServiceä tuoden näkyviin kirjautuneeseen käyttäjään liittyvää dataa (esim. viimeisimmät kuvaukset, käytetyimmät kategoriat) sekä hallitsee käyttäjänimen muokkauksen. Sisältää neljä eri viewiä: profiili, kirjanmerkit, kuvaukset sekä käyttäjänimen muokkaus.
 
 ### PaginatedList
 Luokka, joka perii List luokan. Eli lista objekti, joka jakaa listan itemit sivuihin ja antaa tiedot maksimi sivumäärästä, sekä siitä onko seuraavaa tai edellistä sivua. Hyödynsin tätä muutamassa eri viewissä, jossa voi mahdollisesti olla paljon dataa, tällöin kohteet jakautuvat sivuihin. 
