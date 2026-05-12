@@ -5,17 +5,14 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using FindYourMusic.Services;
 
 namespace FindYourMusic.Controllers {
     public class AuthenticationController : Controller {
-        private readonly DatabaseContext _dbcontext;
         private readonly UserService _userService;
         
-        public AuthenticationController(DatabaseContext dbcontext, UserService userService) {
-            _dbcontext = dbcontext;
+        public AuthenticationController(UserService userService) {
             _userService = userService;
         }
 

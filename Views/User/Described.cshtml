@@ -16,7 +16,12 @@
 			<h1 class="page-title">@User.Identity.Name</h1>
             <a class="button" asp-area="" asp-action="Edit" asp-controller="User">Edit</a>
 		</div>
-		<p class="text-light">Tracks described <b class="text-secondary">@Model.tracksDescribed</b></p>
+        <div>
+            <p class="text-light">Tracks described <b class="text-secondary">@Model.tracksDescribed</b></p>
+            <form asp-action="Logout" asp-controller="Authentication" method="post" asp-antiforgery="true">
+                <button class="button" type="submit">Logout</button>
+            </form>
+        </div>
 	</div>
 
 	<div class="user-view-selection-container text-light">

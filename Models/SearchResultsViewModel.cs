@@ -13,6 +13,8 @@
             }
         }
 
+        public int resultsCount { get { return _trackDescriptionItems.Count(); } }
+
         public List<int>? bookmarkedTracks { get { return _bookmarkedTracks; } }
 
         public string searchDescription { get { return _searchDescription; } }

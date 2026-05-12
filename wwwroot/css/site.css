@@ -92,7 +92,7 @@ main {
     font-weight: 600;
     padding: 3px;
 }
-#navbar-dropdown .link, #navbar-dropdown form, #navbar-dropdown .button {
+#navbar-dropdown .link, #navbar-dropdown .button {
     margin-left: 15px;
 }
 #navbar-dropdown button, #navbar-dropdown .button {
@@ -127,10 +127,13 @@ main {
     align-items: center;
     padding: 0 5px;
 }
+.footer img {
+    width: 50px;
+}
 .footer-links-container {
     display: flex;
     flex-direction: column;
-    align-items: start;
+    align-items: end;
 }
 .footer-brands-container {
     height: 100%;
@@ -193,7 +196,8 @@ a, a:visited, .link, .link:visited {
     font-family: 'Dela Gothic One', Impact, sans-serif;
     color: var(--secondary-color);
     font-size: 45px;
-    line-height: 35px;
+    line-height: 45px;
+    margin-bottom: 10px;
 }
 .text-light {
     color: var(--light-gray-color);
@@ -244,7 +248,7 @@ a, a:visited, .link, .link:visited {
     margin-top: 30px;
 }
 .home-website-info .page-title {
-    margin-bottom: 10px;
+    margin-bottom: 5px;
 }
 .home-website-info .button {
     margin-top: 10px;
@@ -378,6 +382,10 @@ a, a:visited, .link, .link:visited {
 .user-information-container, .user-information-container div {
     display: flex;
     align-items: center;
+    justify-content: space-between;
+}
+.user-information-container p {
+    margin-right: 10px;
 }
 .user-information-container {
     margin-bottom: 8px;
@@ -386,12 +394,11 @@ a, a:visited, .link, .link:visited {
 .user-information-container h1 {
     font-size: 35px;
     margin-right: 15px;
-    padding-bottom: 5px;
 }
 .user-information-container .button {
     font-size: 14px;
     min-width: 85px;
-    padding: 5px 25px;
+    padding: 7px 25px;
 }
 .user-view-link {
     text-align: center;
@@ -456,8 +463,11 @@ a, a:visited, .link, .link:visited {
     flex-direction: row;
     flex-wrap: wrap;
     align-items: start;
-    justify-content: start;
+    justify-content: center;
     margin-top: 20px;
+}
+.user-bookmarks-container .track-item-big {
+    margin: 5px;
 }
 .pagination-container {
     display: flex;
@@ -543,7 +553,7 @@ a, a:visited, .link, .link:visited {
 .category-item p {
     pointer-events: none;
 }
-.category-item.selected, .category-item:hover {
+.category-item.selected {
     color: var(--black-color);
     background-color: var(--secondary-color);
 }
@@ -562,7 +572,7 @@ a, a:visited, .link, .link:visited {
 }
 .search-result-item {
     width: 100%;
-    max-width: 750px;
+    max-width: 800px;
     margin: 0 auto 10px auto;
     display: flex;
     border-radius: 2px;
@@ -610,14 +620,41 @@ a, a:visited, .link, .link:visited {
     margin-left: 10px;
 }
 .search-result-track-information {
-    display: flex;
+    display: none;
     flex: 1;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    min-width: 0;
+}
+.search-result-track-information.show {
+    display: flex;
+}
+.search-result-track-information .track-title-artist-container p {
+    max-width: 100%;
+}
+.search-result-track-information .track-title-artist-container {
+    width: 220px;
+}
+.search-result-track-information .text-accent {
+    flex: 1;
+    text-align: right;
 }
 .bookmark-icon {
     width: 25px;
+    display: block;
+}
+.search-result-flip-icon {
+    width: 20px;
+    cursor: pointer;
+    display: none;
+}
+.search-result-track-categories {
+    display: none;
+    width: 65%;
+    margin-left: 10px;
+}
+.search-result-track-categories.show {
     display: block;
 }
 
@@ -630,6 +667,8 @@ a, a:visited, .link, .link:visited {
 #track-page-title {
     font-size: 36px;
     font-family: "Dela Gothic One", Impact, sans-serif;
+    max-width: 400px;
+    white-space: wrap;
 }
 .track-upper-container {
     margin-bottom: 25px;
@@ -756,7 +795,7 @@ a, a:visited, .link, .link:visited {
     display: block;
 }
 #track-all-categories-container div {
-    width: 100px;
+    width: 130px;
     justify-content: space-between;
     padding: 3px 0;
 }
@@ -1060,6 +1099,9 @@ input:focus {
         margin-left: 0;
         max-width: 600px;
     }
+    #track-page-title {
+        white-space: nowrap;
+    }
     .track-page-title-container {
         max-width: 90%;
     }
@@ -1075,6 +1117,12 @@ input:focus {
         top: 8px;
     }
 }
+@media (hover: hover) {
+    .category-item:hover {
+        color: var(--black-color);
+        background-color: var(--secondary-color);
+    }
+}
 @media (max-width: 685px){
     .user-recent-activity-container {
         justify-content: center;
@@ -1085,6 +1133,10 @@ input:focus {
     }
     .user-information-container div {
         margin-bottom: 5px;
+        width: 100%;
+    }
+    .user-information-container h1, .user-information-container p {
+        margin-bottom: 2px;
     }
     .user-view-selection-container, .category-group-container {
         font-size: 14px;
@@ -1103,8 +1155,20 @@ input:focus {
     .form-container {
         padding: 25px 25px 45px 25px;
     }
+    .search-result-track-information .text-accent {
+        display: none;
+    }
+    .search-result-flip-icon {
+        display: block;
+    }
 }
 @media (max-width: 550px){
+    .page-title {
+        font-size: 30px;
+    }
+    #track-page-title {
+        font-size: 30px;
+    }
     .user-information-container div {
         flex-direction: column;
         align-items: start;
@@ -1121,8 +1185,20 @@ input:focus {
         flex-direction: column;
         align-items: center;
     }
+    #track-selection-form .form-item {
+        margin-right: 0;
+    }
     #track-selection-form .button {
         width: 100%;
         margin: auto;
+    }
+    .track-result p {
+        font-size: 14px;
+    }
+    .search-result-track-categories {
+        width: 140px;
+    }
+    .search-result-track-information .track-title-artist-container {
+        width: 140px;
     }
 }

@@ -13,7 +13,7 @@
 
 <div class="page-container">
     <h1 class="page-title text-center">@Model.searchDescription</h1>
-    <p class="text-center text-light">These results are ordered by the similarity and amount of the categories you selected.</p>
+    <p class="text-center text-light">These results are ordered by the similarity to the categories you selected.</p>
     <div id="results-divider"></div>
     @if (Model.searchResults.Count() == 0) {
         <p class="text-light text-center">No results</p>
@@ -22,21 +22,25 @@
             <div class="search-result-item">
                 <a asp-action="Index" asp-controller="Track" asp-route-title="@Model.searchResults[i].title" asp-route-artist="@Model.searchResults[i].artist" asp-route-gobackUrl="@(Context.Request.Path.ToString() + Context.Request.QueryString)">
                     <div class="search-result-item-inner">
-                        <p class="result-number text-center text-light">@(i+1)</p>
+                        <p class="result-number text-center text-light">@((Model.currentPage*10)-(10-(i+1)))</p>
                         @if (Model.searchResults[i].albumCoverImgUrl == null) {
                             <img class="search-result-album-img" src="~/image-placeholder.webp" alt="album-cover-img" />
                         } else {
                             <img class="search-result-album-img" src="@Model.searchResults[i].albumCoverImgUrl" onerror="this.src='~/image-placeholder.webp'" alt="album-cover-img" />
                         }
-                        <div class="search-result-track-information">
+                        <div id="@i" class="search-result-track-information show">
                             <div class="track-title-artist-container">
-                                <p class="text-light"><b>@Model.searchResults[i].title</b></p>
-                                <p class="text-light">@Model.searchResults[i].artist</p>
+                                <p class="text-light text-wrap"><b>@Model.searchResults[i].title</b></p>
+                                <p class="text-light text-wrap">@Model.searchResults[i].artist</p>
                             </div>
-                            <p class="text-accent">@Model.searchResults[i].categories</p>
+                            <p class="text-accent text-wrap">@Model.searchResults[i].categories</p>
+                        </div>
+                        <div id="@i" class="search-result-track-categories">
+                            <p class="text-accent text-wrap">@Model.searchResults[i].categories</p>
                         </div>
                     </div>    
                 </a>
+                <img id="@i" class="search-result-flip-icon"  src="~/flip-icon.webp" alt="flip-icon" />
                 @if (User.Identity.IsAuthenticated){
                     <form id="bookmark-form" asp-action="Bookmark" asp-controller="Track" method="post" asp-antiforgery="true">
                         @if(Model.bookmarkedTracks.Contains(Model.searchResults[i].trackId)){
@@ -62,26 +66,57 @@
 
 <div class="pagination-container">
     @if (Model.searchResults.HasPreviousPage) {
-        <a asp-action="Described" asp-controller="User" asp-route-PageNumber="@(Model.searchResults.PageIndex - 1)">
-            <img src="~/arrow-icon-left.webp" alt="arrow-to-left-icon" style="width: 15px; display: block; margin-right: 10px;" />
-        </a>
+        <a href="@(Url.Action("Results", "Search", new {
+            categories = Context.Request.Query["categories"],
+            PageNumber = Model.searchResults.PageIndex - 1
+        }))"><img src="~/arrow-icon-left.webp" alt="arrow-to-left-icon" style="width: 15px; display: block; margin-right: 5px;" /></a>
     }
     @if (Model.totalPages != 1) {
         @for (int i = 1; i <= Model.totalPages; i++) {
-            <a asp-action="Described" asp-controller="User" asp-route-PageNumber="@i"
-               class="page-number@(i == Model.currentPage ? "" : " disabled")">
-                @i
-            </a>
+            <a class="page-number@(i == Model.currentPage ? "" : " disabled")" href="@(Url.Action("Results", "Search", new {
+                categories = Context.Request.Query["categories"],
+                PageNumber = i
+            }))">@i</a>
         }
     }
     @if (Model.searchResults.HasNextPage) {
-        <a asp-action="Described" asp-controller="User" asp-route-PageNumber="@(Model.searchResults.PageIndex + 1)">
-            <img src="~/arrow-icon-right.webp" alt="arrow-to-right-icon" style="width: 15px; display: block; margin-left: 10px;" />
-        </a>
+        <a href="@(Url.Action("Results", "Search", new {
+            categories = Context.Request.Query["categories"],
+            PageNumber = Model.searchResults.PageIndex + 1
+        }))"><img src="~/arrow-icon-right.webp" alt="arrow-to-right-icon" style="width: 15px; display: block; margin-left: 5px;" /></a>
     }
 </div>
 }
 
 @section Scripts {
     <script src="~/js/bookmark.js"></script>
+    <script>
+        const flip_icons = document.querySelectorAll(".search-result-flip-icon");
+        const track_information_containers = document.querySelectorAll(".search-result-track-information");
+        const track_categories_containers = document.querySelectorAll(".search-result-track-categories");
+
+        const handle_flip = (e) => {
+            const index = parseInt(e.target.id);
+            reset_flipped_elements(index);
+            if(track_information_containers[index].classList.contains("show")){
+                track_information_containers[index].classList.remove("show");
+                track_categories_containers[index].classList.add("show");
+            } else {
+                track_information_containers[index].classList.add("show");
+                track_categories_containers[index].classList.remove("show");
+            }
+        }
+
+        const reset_flipped_elements = (index) => {
+            const track_categories_containers = document.querySelectorAll(".search-result-track-categories.show");
+            track_categories_containers.forEach(element => {
+                if(element.id != index){
+                    element.classList.remove("show");
+                    track_information_containers[parseInt(element.id)].classList.add("show");
+                }
+            });
+        }
+
+        flip_icons.forEach(icon => icon.addEventListener("click", (e) => handle_flip(e)));
+    </script>
 }

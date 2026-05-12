@@ -71,7 +71,9 @@ const deselect_category = (category) => {
 	selected_categories_list.splice(selected_categories_list.findIndex(c => c.id == category.id), 1);
 	category.classList.remove("selected");
 	const input = document.querySelector(`input[value="${category.id}"]`);
-	input.remove();
+	if(input) {
+		input.remove();
+	}
 }
 
 const toggle_category = (e) => {
@@ -98,8 +100,6 @@ const handle_form_submit = (e) => {
 	const inputs = document.querySelectorAll("input[name='categories']");
 	if (selected_categories_list.length == 0 || selected_categories_list.length > MAXIMUM_CATEGORY_AMOUNT || inputs.length <= 0 || inputs.length > MAXIMUM_CATEGORY_AMOUNT) {
 		e.preventDefault();
-		//show message
-		console.log("Nice try...");
 	}
 }
 
