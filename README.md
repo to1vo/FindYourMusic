@@ -3,7 +3,7 @@
 ASP .NET Core MVC, C#, HTML5/CSS3, JavaScript, MySQL + Entity Framework Core
 
 ## Sovelluksen kuvaus
-Web-sovellus, jossa käyttäjät voivat kuvailla kappaleita erilaisilla valmiiksi määritetyilla kategorioilla. Muut käyttäjät voivat löytää kappaleita tekemällä hakuja valiten tiettyjä kategorioita. Kategorioiden teemat eivät ole niinkään genre tai musiikkityyli kohtaisia, vaan enemmänkin tunteisiin, tilanteeseen ja äänimaailmaan liittyviä.
+Web-sovellus, jossa käyttäjät voivat kuvailla kappaleita erilaisilla valmiiksi määritetyilla kategorioilla. Muut käyttäjät voivat löytää kappaleita tekemällä hakuja valiten tiettyjä kategorioita. Kategorioiden teemat eivät ole niinkään genre tai musiikkityyli kohtaisia, vaan enemmänkin tunteisiin, ympäristöön ja äänimaailmaan liittyviä.
 
 ## Toiminnot
 ### Normaali käyttäjä
