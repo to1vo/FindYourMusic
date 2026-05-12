@@ -15,7 +15,7 @@ Web-sovellus, jossa käyttäjät voivat kuvailla kappaleita erilaisilla valmiiks
 - Kappaleiden etsiminen kategorioilla
 - Kappaleiden tietojen tarkastelu
 - Kappaleiden kuvaileminen kategorioilla
-- Kappaleen lisäys tietokantaan
+- Kappaleen lisäys tietokantaan manuaalisesti
 - Kappaleiden lisääminen kirjanmerkkeihin
 - Oman profiilin tarkastelu
 
