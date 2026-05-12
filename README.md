@@ -48,10 +48,11 @@ Sovelluksen tietokantana toimii MySQL.
 - <b>CategoryGroup</b>: Kategoria ryhmien nimet on tallennettuna tietokantaan, jotta yksittäiset kategoriat voidaan helposti liittää oikeaan ryhmään.
 - <b>UserTrackCategory</b>: Tämä on viitetaulu, johon tallentuu käyttäjän kuvaus kappaleesta per kategoria.
 - <b>Bookmark</b>: Tähän viitetauluun tallentuu käyttäjien kirjanmerkatut kappaleet.
+
 ![Er-kaavio](https://github.com/to1vo/FindYourMusic/blob/main/er-kaavio.png)
 
 ### APIService
-Service, jonka avulla kontrollerit voivat keskustella rajapinnan kanssa. Methodit kappaleiden hakua sekä kappaleen tietoja varten, jotka käyttävät last.fm API:n track.search ja track.getInfo endpointteja.
+Service, jonka avulla voi keskustella rajapinnan kanssa. Methodit kappaleiden hakua sekä kappaleen tietoja varten, jotka käyttävät last.fm API:n track.search ja track.getInfo endpointteja.
 
 ### CategoryService
 Sisältää muutaman methodin kategorioiden ja niiden ryhmien tuomiseen tietokannasta, nopeuttaen näin prosessia, joka on aika yleinen.
@@ -62,9 +63,26 @@ Erilaisia methodeja kappaleiden hakemiseen tietokannasta tai tarkastuksia siitä
 ### UserService
 Methodeja joiden avulla voi hakea käyttäjään liittyvää dataa tietokannasta (esim. kaikki kirjanmerkatut kappaleet). Sisältää myös toimintoja uuden käyttäjän luomiseen sekä jo olemassa olevan muokkaamiseen.
 
-### Autentikaatio - AuthenticationController
+### Etusivu - HomeController
+Hyödyntää Track- ja UserServiceä hakien näin etusivulla näkyvillä olevan datan. Sivulla näkyvä data muuttuu sen perusteella onko käyttäjä kirjautuneena sisään.
+
+### About sivu - AboutController
+Palauttaa viewin.
+
+### Autentikaatio - AuthenticationController 
 Tämän kontrollerin tarkoitus on hallita käyttäjän autentikaatiota, eli kirjautumista sekä uuden käyttäjän luontia. Kontrolleri käyttää tässä apuna UserServiceä. Sisäänkirjautuminen hyödyntää CookieAuthenticationDefaultsia sekä ClaimsIdentityä, eli luo cookien, jolla se pitää käyttäjän kirjautumissession tallessa. Identityyn on tallennettuna käyttäjän nimi sekä id, jonka avulla kirjautuneen käyttäjän dataa voidaan hakea tietokannasta id:n avulla.
 
 ### Kappaleiden haku - SearchController
-Hallitsee käyttäjän hakua valituilla kategorioilla hyödyntäen Category-, Track- sekä UserServiceä. 
- 
+Hallitsee käyttäjän hakua valituilla kategorioilla hyödyntäen Category-, Track- sekä UserServiceä. Kun käyttäjä hakee kappaleita valituilla kategorioilla tulokset tulevat tietokannasta, koska sinne on tallennettu kaikki kappaleet joita joku on kuvaillut.
+
+### Kappaleen kuvaus - DescribeController
+Tämän kontrollerin endpointit ovat käytössä vain kirjautuneelle käyttäjälle ja se hyödyntää API-, Category-, Track- sekä UserServiceä. Hallitsee kappaleen kuvaus sivua, hakee yksittäisen kappaleen tiedot API:sta, tuo mahdollisesti käyttäjän edellisen kuvauksen, lisää uuden kuvauksen kappaleelle sekä suorittaa kappaleen manuaalisen lisäyksen.
+
+### Kappale sivu - TrackController
+Hakee kyseisen kappaleen tiedot tietokannasta sekä siihen liittyvää dataa (esim. samankaltaiset kappaleet, yleisimmät kategoriat), sisältää myös endpointit kirjanmerkin lisäykseen hyödyntäen näissä kaikissa Track- ja UserServiceä. Näkyvä sivu eroaa hieman siitä onko käyttäjä kirjautuneena. Kirjautunut käyttäjä pystyy lisäämään kappaleen kirjanmerkkeihin sekä nähdä oman kuvauksen kyseisestä kappaleesta, josta hän pääsee myös muokkaamaan sitä.
+
+### Käyttäjän profiili - UserController
+Käyttää UserServiceä tuoden näkyviin kirjautuneeseen käyttäjään liittyvää dataa (esim. viimeisimmät kuvaukset, käytetyimmät kategoriat). Sisältää neljä eri viewiä: profiili, kirjanmerkit, kuvaukset sekä käyttäjänimen muokkaus.
+
+### PaginatedList
+Luokka, joka perii List luokan. Eli lista objekti, joka jakaa listan itemit sivuihin ja antaa tiedot maksimi sivumäärästä, sekä siitä onko seuraavaa tai edellistä sivua. Hyödynsin tätä muutamassa eri viewissä, jossa voi mahdollisesti olla paljon dataa, tällöin kohteet jakautuvat sivuihin. 
