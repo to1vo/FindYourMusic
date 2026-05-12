@@ -26,7 +26,7 @@ Käyttäjä voi hakea siis sivuston tietokannasta kappaleita tietyllä määräl
 Klikkaamalla kappaletta vie se kappaleen omalle sivulle, jossa näkyy siihen liittyviä perustietoja sekä mahdollisesti oma kuvaus.
 
 ### Kirjanmerkiksi lisääminen
-Käyttäjä voi painaa kirjanmerkki kuvaketta kappaleiden vierestä eri näkymissä, tämä lisää sen käyttäjän omalle listalle. Käyttäjä voi tietenkin myös halutessaan poistaa kappaleen kuuntelulistalta painamalla samaa kuvaketta uudestaan.
+Käyttäjä voi painaa kirjanmerkki kuvaketta kappaleiden vierestä eri näkymissä, tämä lisää sen käyttäjän omalle "muista kuunnella" listalle. Käyttäjä voi tietenkin myös halutessaan poistaa kappaleen listalta painamalla samaa kuvaketta uudestaan.
 
 ### Kappaleiden kuvaileminen
 Käyttäjä tekee ensin haun haluamastaan kappaleesta nimen tai artistin perusteella, tulokset tulevat rajapinnasta sekä tietokannasta. Jos käyttäjä ei löydä haluamaan, mahdollisesti harvinaista kappaletta voi hän lisätä sen manuaalisesti tietokantaan. Valittuaan kappaleen käyttäjä valitsee mielestään siihen sopivat kategoriat (max neljä), jotka kuvaavat kappaleeseen sopivaa tunnetta, ympäristöä tai äänimaailmaa. Käyttäjä voi muuttaa omia kategorisointejaan, joko kyseisen kappaleen sivun kautta, oman profiilin kautta tai hakemalla kappaleen kokonaan uudelleen. Kun käyttäjä menee kuvailemaan jo aikaisemmin kuvailtua kappaletta, sen hetkiset kategoriat ovat automaattisesti valittuna. 
