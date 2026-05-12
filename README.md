@@ -38,7 +38,7 @@ Kuvaillut kappaleet tallennetaan tietokantaan. Eli kun käyttäjä etsii kappale
 Sovellus on siis toteutettu ASP .NET Core MVC ohjelmistokehyksellä, joten pääohjelmointikielenä toimi C#. Web-sivun dynaamiset toiminnot on toteutettu Vanilla JavaScriptillä. Tietokantana toimii MySQL ja sitä käsitellään Entity Framework Core kehyksellä. 
 
 ### Tiedon haku
-Koska sovellus käsittelee kappaleita ja niihin liittyvää tietoa, hyödyntää se kolmannen osapuolen rajapintaa. Rajapinnaksi valikoitui [last.fm API](https://www.last.fm/api). Sovellus hyödyntää rajapintaa kappaleiden hakemiseen sekä siten niiden tietojen tallentamiseen. Osa kappaleen tiedoista tallennetaan sovelluksen tietokantaan, jotta sivuston toiminnallisuus ei ole vain rajapinnan varassa. Kyseisen rajapinnan tulokset saattaavat olla välillä puutteellisia, joten se piti ottaa huomioon sitä käyttäessä.
+Koska sovellus käsittelee kappaleita ja niihin liittyvää tietoa, hyödyntää se kolmannen osapuolen rajapintaa. Rajapinnaksi valikoitui [last.fm API](https://www.last.fm/api). Sovellus hyödyntää rajapintaa kappaleiden hakemiseen sekä yksittäisen kappaleen tietojen tallentamiseen. Osa kappaleen tiedoista tallennetaan sovelluksen tietokantaan, jotta sivuston toiminnallisuus ei ole vain rajapinnan varassa. Kyseisen rajapinnan tulokset saattaavat olla välillä puutteellisia, joten se piti ottaa huomioon sitä käyttäessä.
 
 ### Tiedon tallennus
 Sovelluksen tietokantana toimii MySQL.
