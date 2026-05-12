@@ -29,20 +29,42 @@ Klikkaamalla kappaletta vie se kappaleen omalle sivulle, jossa näkyy siihen lii
 Käyttäjä voi painaa kirjanmerkki kuvaketta kappaleiden vierestä eri näkymissä, tämä lisää sen käyttäjän omalle kuuntelulistalle. Käyttäjä voi tietenkin myös halutessaan poistaa kappaleen kuuntelulistalta painamalla samaa kuvaketta uudestaan.
 
 ### Kappaleiden kuvaileminen
-Käyttäjä tekee ensin haun haluamastaan kappaleesta nimen tai artistin perusteella, tulokset tulevat rajapinnasta sekä tietokannasta. Jos käyttäjä ei löydä haluamaan, mahdollisesti harvinaista kappaletta voi hän lisätä sen manuaalisesti. Valittuaan kappaleen käyttäjä valitsee mielestään siihen sopivat kategoriat (max neljä), jotka kuvaavat kappaleeseen sopivaa tunnetta, ympäristöä tai äänimaailmaa. Käyttäjä voi muuttaa omia kategorisointejaan, joko kyseisen kappaleen sivun kautta, oman profiilin kautta tai hakemalla kappaleen kokonaan uudelleen. Kun käyttäjä menee kuvailemaan jo aikaisemmin kuvailtua kappaletta, sen hetkiset kategoriat ovat automaattisesti valittuna. 
+Käyttäjä tekee ensin haun haluamastaan kappaleesta nimen tai artistin perusteella, tulokset tulevat rajapinnasta sekä tietokannasta. Jos käyttäjä ei löydä haluamaan, mahdollisesti harvinaista kappaletta voi hän lisätä sen manuaalisesti tietokantaan. Valittuaan kappaleen käyttäjä valitsee mielestään siihen sopivat kategoriat (max neljä), jotka kuvaavat kappaleeseen sopivaa tunnetta, ympäristöä tai äänimaailmaa. Käyttäjä voi muuttaa omia kategorisointejaan, joko kyseisen kappaleen sivun kautta, oman profiilin kautta tai hakemalla kappaleen kokonaan uudelleen. Kun käyttäjä menee kuvailemaan jo aikaisemmin kuvailtua kappaletta, sen hetkiset kategoriat ovat automaattisesti valittuna. 
 
 ### Kappaleen lisäys tietokantaan
-Käyttäjä lisää tarvittavat tiedot haluamastaan kappaleesta, mahdollinen duplikaatti tarkastus suoritetaan ennen sen lisäystä tietokantaan.
+Kuvaillut kappaleet tallennetaan tietokantaan. Eli kun käyttäjä etsii kappaleita kategorioilla tulokset tulevat tietokannasta. Manuaalisesti lisätessä käyttäjä lisää tarvittavat tiedot haluamastaan kappaleesta, mahdollinen duplikaatti tarkastus suoritetaan ennen kappaleen lisäystä tietokantaan.
 
-## Tiedon haku ja tallennus
+## Tekninen toteutus
+Sovellus on siis toteutettu ASP .NET Core MVC ohjelmistokehyksellä, joten pääohjelmointikielenä toimi C#. Web-sivun dynaamiset toiminnot on toteutettu Vanilla JavaScriptillä. Tietokantana toimii MySQL ja sitä käsitellään Entity Framework Core kehyksellä. Sivuston ulkoasu on tehty kokonaan CSS:llä. 
+
 ### Tiedon haku
-Koska sovellus käsittelee kappaleita ja niihin liittyvää tietoa, hyödyntää se kolmannen osapuolen rajapintaa. Rajapinnaksi valikoitui [last.fm API](https://www.last.fm/api). Sovellus hyödyntää rajapintaa kappaleiden löytämiseen sekä tietojen tallentamiseen. Osa kappaleen tiedoista tallennetaan sovelluksen tietokantaan, jotta sivuston toiminnallisuus ei ole vain rajapinnan varassa. Kyseisen rajapinnan tulokset saattaavat olla välillä puutteellisia, joten se piti ottaa huomioon sitä käyttäessä.
+Koska sovellus käsittelee kappaleita ja niihin liittyvää tietoa, hyödyntää se kolmannen osapuolen rajapintaa. Rajapinnaksi valikoitui [last.fm API](https://www.last.fm/api). Sovellus hyödyntää rajapintaa kappaleiden hakemiseen sekä siten niiden tietojen tallentamiseen. Osa kappaleen tiedoista tallennetaan sovelluksen tietokantaan, jotta sivuston toiminnallisuus ei ole vain rajapinnan varassa. Kyseisen rajapinnan tulokset saattaavat olla välillä puutteellisia, joten se piti ottaa huomioon sitä käyttäessä.
 
 ### Tiedon tallennus
 Sovelluksen tietokantana toimii MySQL.
 - <b>User</b>: Käyttäjänimi sekä enkryptattu salasana.
-- <b>Track</b>: Kategorisoiduista kappaleista tallennetaan tärkeimmät tiedot. Rajapinnasta sekä käyttäjien manuaalisesti lisäämät.
+- <b>Track</b>: Kategorisoiduista kappaleista tallennetaan tärkeimmät tiedot. Rajapinnasta tulleet sekä käyttäjien manuaalisesti lisäämät.
 - <b>Category</b>: Kategoriat, joilla kappaleita kuvaillaan on tallennettuna tietokantaan.
 - <b>CategoryGroup</b>: Kategoria ryhmien nimet on tallennettuna tietokantaan, jotta yksittäiset kategoriat voidaan helposti liittää oikeaan ryhmään.
-- <b>UserTrackCategory</b>: Tämä on viitetaulu, johon on tallennettu käyttäjän id, kategorian id, kappaleen id sekä päivämäärä.
+- <b>UserTrackCategory</b>: Tämä on viitetaulu, johon tallentuu käyttäjän kuvaus kappaleesta per kategoria.
+- <b>Bookmark</b>: Tähän viitetauluun tallentuu käyttäjien kirjanmerkatut kappaleet.
 ![Er-kaavio](https://github.com/to1vo/FindYourMusic/blob/main/er-kaavio.png)
+
+### APIService
+Service, jonka avulla kontrollerit voivat keskustella rajapinnan kanssa. Methodit kappaleiden hakua sekä kappaleen tietoja varten, jotka käyttävät last.fm API:n track.search ja track.getInfo endpointteja.
+
+### CategoryService
+Sisältää muutaman methodin kategorioiden ja niiden ryhmien tuomiseen tietokannasta, nopeuttaen näin prosessia, joka on aika yleinen.
+
+### TrackService
+Erilaisia methodeja kappaleiden hakemiseen tietokannasta tai tarkastuksia siitä löytyykö kappaletta tietokannasta.
+
+### UserService
+Methodeja joiden avulla voi hakea käyttäjään liittyvää dataa tietokannasta (esim. kaikki kirjanmerkatut kappaleet). Sisältää myös toimintoja uuden käyttäjän luomiseen sekä jo olemassa olevan muokkaamiseen.
+
+### Autentikaatio - AuthenticationController
+Tämän kontrollerin tarkoitus on hallita käyttäjän autentikaatiota, eli kirjautumista sekä uuden käyttäjän luontia. Kontrolleri käyttää tässä apuna UserServiceä. Sisäänkirjautuminen hyödyntää CookieAuthenticationDefaultsia sekä ClaimsIdentityä, eli luo cookien, jolla se pitää käyttäjän kirjautumissession tallessa. Identityyn on tallennettuna käyttäjän nimi sekä id, jonka avulla kirjautuneen käyttäjän dataa voidaan hakea tietokannasta id:n avulla.
+
+### Kappaleiden haku - SearchController
+Hallitsee käyttäjän hakua valituilla kategorioilla hyödyntäen Category-, Track- sekä UserServiceä. 
+ 
