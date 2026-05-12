@@ -1,6 +1,6 @@
 # FindYourMusic - Fullstack projekti
 
-ASP .NET Core MVC, C#, HTML5/CSS3, JavaScript, MySQL + Entity Framework Core
+ASP .NET Core MVC, C#, HTML5/CSS3, JavaScript + Chart.js, MySQL + Entity Framework Core
 
 ## Sovelluksen kuvaus
 Web-sovellus, jossa käyttäjät voivat kuvailla kappaleita erilaisilla valmiiksi määritetyilla kategorioilla. Muut käyttäjät voivat löytää kappaleita tekemällä hakuja valiten tiettyjä kategorioita. Kategorioiden teemat eivät ole niinkään genre tai musiikkityyli kohtaisia, vaan enemmänkin tunteisiin, ympäristöön ja äänimaailmaan liittyviä.
@@ -35,7 +35,7 @@ Käyttäjä tekee ensin haun haluamastaan kappaleesta nimen tai artistin peruste
 Kuvaillut kappaleet tallennetaan tietokantaan. Eli kun käyttäjä etsii kappaleita kategorioilla tulokset tulevat tietokannasta. Manuaalisesti lisätessä käyttäjä lisää tarvittavat tiedot haluamastaan kappaleesta, mahdollinen duplikaatti tarkastus suoritetaan ennen kappaleen lisäystä tietokantaan.
 
 ## Tekninen toteutus
-Sovellus on siis toteutettu ASP .NET Core MVC ohjelmistokehyksellä, joten pääohjelmointikielenä toimi C#. Web-sivun dynaamiset toiminnot on toteutettu Vanilla JavaScriptillä. Tietokantana toimii MySQL ja sitä käsitellään Entity Framework Core kehyksellä. 
+Sovellus on siis toteutettu ASP .NET Core MVC ohjelmistokehyksellä, joten pääohjelmointikielenä toimi C#. Web-sivun dynaamiset toiminnot on toteutettu tietenkin JavaScriptillä. Tietokantana toimii MySQL ja sitä käsitellään Entity Framework Core kehyksellä. 
 
 ### Tiedon haku
 Koska sovellus käsittelee kappaleita ja niihin liittyvää tietoa, hyödyntää se kolmannen osapuolen rajapintaa. Rajapinnaksi valikoitui [last.fm API](https://www.last.fm/api). Sovellus hyödyntää rajapintaa kappaleiden hakemiseen sekä yksittäisen kappaleen tietojen tallentamiseen. Osa kappaleen tiedoista tallennetaan sovelluksen tietokantaan, jotta sivuston toiminnallisuus ei ole vain rajapinnan varassa. Kyseisen rajapinnan tulokset saattaavat olla välillä puutteellisia, joten se piti ottaa huomioon sitä käyttäessä.
@@ -86,3 +86,13 @@ Käyttää UserServiceä tuoden näkyviin kirjautuneeseen käyttäjään liittyv
 
 ### PaginatedList
 Luokka, joka perii List luokan. Eli lista objekti, joka jakaa listan itemit sivuihin ja antaa tiedot maksimi sivumäärästä, sekä siitä onko seuraavaa tai edellistä sivua. Hyödynsin tätä muutamassa eri viewissä, jossa voi mahdollisesti olla paljon dataa, tällöin kohteet jakautuvat sivuihin. 
+
+### JavaScript
+Sovellus hyödyntää JavaScriptiä tilanteissa, jossa sivuston datan/ulkonäön päivitys pitää tapahtua dynaamisesti ilman sen uudelleen latausta. Scriptit, joita moni viewi hyödyntää ovat erillisinä tiedostoina, muuten koodi on suoraan tietyssä viewissä script tagin sisällä. 
+
+- <b>Kirjautumis sivun näkymä</b>: Kirjautumis sivulla voi vaihtaa näkymää kirjautumisen ja rekisteröinnin välillä, tämä tapahtuu tietenkin JavaScriptin fetchin avulla tuoden halutun partialviewin ilman, että sivu latautuu uudelleen. 
+- <b>Kirjanmerkin lisäys</b>: Tietyissä näkymissä kirjanmerkin lisäys tapahtuu ilman, että sivu päivittyy, hyödyntäen TrackControllerin Bookmark endpointia.
+- <b>Taulukot</b>: Hyödynsin sovelluksessa Chart.js kirjastoa, jonka avulla sain visualisoitua dataa (esim. kappaleen yleisimmät kategoriat).
+- <b>Kategorioiden valinta</b>: Halusin, että kategorioiden valinta olisi jotain muuta kuin vain formin alasveto valikot, joten tein siitä visuaalisen, käyttäjä klikkaa haluamansa kategoriat valiten eri ryhmien välillä, valittujen kategorioiden tila, näytettävän ryhmän valinta sekä inputtien lisäys lähetettävään formiin tapahtuu tietenkin JavaScriptin avulla.
+ 
+JavaScriptiä on myös hyödynnetty muissa pienissä asioissa esim. ilmoitusten sulkeminen ja nav alasveto valikko yms. 
