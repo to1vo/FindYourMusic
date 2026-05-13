@@ -41,9 +41,9 @@ Sovellus on siis toteutettu ASP .NET Core MVC ohjelmistokehyksellä, joten pää
 Koska sovellus käsittelee kappaleita ja niihin liittyvää tietoa, hyödyntää se kolmannen osapuolen rajapintaa. Rajapinnaksi valikoitui [last.fm API](https://www.last.fm/api). Sovellus hyödyntää rajapintaa kappaleiden hakemiseen sekä yksittäisen kappaleen tietojen tallentamiseen. Osa kappaleen tiedoista tallennetaan sovelluksen tietokantaan, jotta sivuston toiminnallisuus ei ole vain rajapinnan varassa. Kyseisen rajapinnan tulokset saattaavat olla välillä puutteellisia, joten se piti ottaa huomioon sitä käyttäessä.
 
 ### Tiedon tallennus
-Sovelluksen tietokantana toimii MySQL. Kaikki lomakkeet on liitettynä omaan ViewModeliin, jonka avulla lomakkeen arvot voidaan tarkastaa.
+Sovelluksen tietokantana toimii MySQL. Kaikki lomakkeet joiden dataa tallennetaan tietokantaan on liitettynä omaan ViewModeliin, jonka avulla lomakkeen arvot voidaan tarkastaa.
 - <b>User</b>: Käyttäjänimi sekä enkryptattu salasana.
-- <b>Track</b>: Kategorisoiduista kappaleista tallennetaan tärkeimmät tiedot. Rajapinnasta tulleet sekä käyttäjien manuaalisesti lisäämät.
+- <b>Track</b>: Kategorisoiduista kappaleista tallennetaan tärkeimmät tiedot. Rajapinnasta tulleet sekä käyttäjien manuaalisesti lisäämät. Käyttäjien lisäämät merkataan "userAdded" sarakkeella. Koska API:sta tuleva data saattaa olla puutteellista usea sarake saa olla null. Jos kappaleen albumin kuvaketta ei ole, sivu käyttää oletuskuvaketta.
 - <b>Category</b>: Kategoriat, joilla kappaleita kuvaillaan on tallennettuna tietokantaan.
 - <b>CategoryGroup</b>: Kategoria ryhmien nimet on tallennettuna tietokantaan, jotta yksittäiset kategoriat voidaan helposti liittää oikeaan ryhmään.
 - <b>UserTrackCategory</b>: Tämä on viitetaulu, johon tallentuu käyttäjän kuvaus kappaleesta per kategoria.
@@ -76,13 +76,13 @@ Tämän kontrollerin tarkoitus on hallita käyttäjän autentikaatiota, eli kirj
 Hallitsee käyttäjän hakua valituilla kategorioilla hyödyntäen Category-, Track- sekä UserServiceä. Kun käyttäjä hakee kappaleita valituilla kategorioilla tulokset tulevat tietokannasta, koska sinne on tallennettu kaikki kappaleet joita joku on kuvaillut. Sisältää Index ja Results viewin. Index viewissä on itse kappaleiden haku toiminto, joka sitten vie käyttäjän results viewiin, jossa näkyy hakutulokset.
 
 ### Kappaleen kuvaus - DescribeController
-Tämän kontrollerin endpointit ovat käytössä vain kirjautuneelle käyttäjälle ja se hyödyntää API-, Category-, Track- sekä UserServiceä. Hallitsee kappaleen kuvaus sivua, hakee yksittäisen kappaleen tiedot API:sta, tuo mahdollisesti käyttäjän edellisen kuvauksen, lisää uuden kuvauksen kappaleelle sekä suorittaa kappaleen manuaalisen lisäyksen. Sisältää Add, AddManual ja Index viewin. Index viewissä on kappaleen valinta eli haku API:sta ja tietokannasta
+Tämän kontrollerin endpointit ovat käytössä vain kirjautuneelle käyttäjälle ja se hyödyntää API-, Category-, Track- sekä UserServiceä. Hallitsee kappaleen kuvaus sivua, hakee yksittäisen kappaleen tiedot API:sta, tuo mahdollisesti käyttäjän edellisen kuvauksen, lisää uuden kuvauksen kappaleelle sekä suorittaa kappaleen manuaalisen lisäyksen. Sisältää Add, AddManual ja Index viewin. Index viewissä on halutun kappaleen valinta eli haku API:sta + tietokannasta. Kappaleen valitseminen vie Add viewiin, jossa käyttäjä valitsee kategoriat, tätä sivua käytetään myös käyttäjän kuvailun muuttamisessa, jolloin edelliset kategoriat ovat automaattisesti valittuna. AddManual sivu sisältää kappaleen lisäys lomakkeen.
 
 ### Kappale sivu - TrackController
-Hakee kyseisen kappaleen tiedot tietokannasta sekä siihen liittyvää dataa (esim. samankaltaiset kappaleet, yleisimmät kategoriat), sisältää myös endpointit kirjanmerkin lisäykseen hyödyntäen näissä kaikissa Track- ja UserServiceä. Näkyvä sivu eroaa hieman siitä onko käyttäjä kirjautuneena. Kirjautunut käyttäjä pystyy lisäämään kappaleen kirjanmerkkeihin sekä nähdä oman kuvauksen kyseisestä kappaleesta, josta hän pääsee myös muokkaamaan sitä. Sisältää Index viewin.
+Hakee kyseisen kappaleen tiedot tietokannasta sekä siihen liittyvää dataa (esim. samankaltaiset kappaleet, yleisimmät kategoriat), sisältää myös endpointit kirjanmerkin lisäykseen hyödyntäen näissä kaikissa Track- ja UserServiceä. Näkyvä sivu eroaa hieman siitä onko käyttäjä kirjautuneena. Kirjautunut käyttäjä pystyy lisäämään kappaleen kirjanmerkkeihin sekä nähdä oman kuvauksen kyseisestä kappaleesta, josta hän pääsee myös muokkaamaan sitä. Sisältää Index viewin, jossa on kappaleeseen liittyvä sisältö.
 
 ### Käyttäjän profiili - UserController
-Käyttää UserServiceä tuoden näkyviin kirjautuneeseen käyttäjään liittyvää dataa (esim. viimeisimmät kuvaukset, käytetyimmät kategoriat) sekä hallitsee käyttäjänimen muokkauksen. Sisältää neljä eri viewiä: profiili, kirjanmerkit, kuvaukset sekä käyttäjänimen muokkaus. 
+Käyttää UserServiceä tuoden näkyviin kirjautuneeseen käyttäjään liittyvää dataa (esim. viimeisimmät kuvaukset, käytetyimmät kategoriat) sekä hallitsee käyttäjänimen muokkauksen. Sisältää neljä eri viewiä: profiili, kirjanmerkit, kuvaukset sekä käyttäjänimen muokkaus. Profiili näkymässä on käyttäjän viimeisimmät tapahtumat, kirjanmerkit näkymässä on kappaleet, jotka käyttäjä on lisännyt kirjanmerkkeihin, kuvaukset näkymässä on kaikki käyttäjän kuvailemat kappaleet ja käyttäjänimen muokkaus sivulla on lomake sitä varten.
 
 ### PaginatedList
 Luokka, joka perii List luokan. Eli lista objekti, joka jakaa listan itemit sivuihin ja antaa tiedot maksimi sivumäärästä, sekä siitä onko seuraavaa tai edellistä sivua. Hyödynsin tätä muutamassa eri viewissä, jossa voi mahdollisesti olla paljon dataa, tällöin kohteet jakautuvat sivuihin. 
