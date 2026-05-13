@@ -33,31 +33,39 @@
                                 <p class="text-light text-wrap"><b>@Model.searchResults[i].title</b></p>
                                 <p class="text-light text-wrap">@Model.searchResults[i].artist</p>
                             </div>
-                            <p class="text-accent text-wrap">@Model.searchResults[i].categories</p>
-                        </div>
+                            @if(User.Identity.IsAuthenticated){
+                                <p class="text-accent text-wrap">@Model.searchResults[i].categories</p>
+                            } else {
+                                <p class="text-accent text-wrap" style="margin-right: 15px;">@Model.searchResults[i].categories</p>
+                            }
+                            </div>
                         <div id="@i" class="search-result-track-categories">
                             <p class="text-accent text-wrap">@Model.searchResults[i].categories</p>
                         </div>
                     </div>    
                 </a>
-                <img id="@i" class="search-result-flip-icon"  src="~/flip-icon.webp" alt="flip-icon" />
+                @if (User.Identity.IsAuthenticated) {
+                    <img id="@i" class="search-result-flip-icon" src="~/flip-icon.webp" alt="flip-icon" />
+                } else {
+                    <img id="@i" class="search-result-flip-icon" style="margin-right: 15px;" src="~/flip-icon.webp" alt="flip-icon" />
+                }
                 @if (User.Identity.IsAuthenticated){
-                    <form id="bookmark-form" asp-action="Bookmark" asp-controller="Track" method="post" asp-antiforgery="true">
-                        @if(Model.bookmarkedTracks.Contains(Model.searchResults[i].trackId)){
-                            <input id="bookmark-toggle-input" type="hidden" name="state" value="1" />
+                <form id="bookmark-form" asp-action="Bookmark" asp-controller="Track" method="post" asp-antiforgery="true">
+                    @if(Model.bookmarkedTracks.Contains(Model.searchResults[i].trackId)){
+                        <input id="bookmark-toggle-input" type="hidden" name="state" value="1" />
+                    } else {
+                        <input id="bookmark-toggle-input" type="hidden" name="state" value="0" />
+                    }
+                    <input type="hidden" name="trackId" value="@Model.searchResults[i].trackId" />
+                    <input type="hidden" name="returnUrl" value="@(Context.Request.Path.ToString()+Context.Request.QueryString)" />
+                    <button id="track-bookmark-button" class="bookmark-button" type="submit">
+                        @if (Model.bookmarkedTracks.Contains(Model.searchResults[i].trackId)){
+                            <img class="bookmark-icon" src="~/bookmark-icon-selected.webp" alt="bookmark-icon" />
                         } else {
-                            <input id="bookmark-toggle-input" type="hidden" name="state" value="0" />
+                            <img class="bookmark-icon" src="~/bookmark-icon.webp" alt="bookmark-icon" />
                         }
-                        <input type="hidden" name="trackId" value="@Model.searchResults[i].trackId" />
-                        <input type="hidden" name="returnUrl" value="@(Context.Request.Path.ToString()+Context.Request.QueryString)" />
-                        <button id="track-bookmark-button" class="bookmark-button" type="submit">
-                            @if (Model.bookmarkedTracks.Contains(Model.searchResults[i].trackId)){
-                                <img class="bookmark-icon" src="~/bookmark-icon-selected.webp" alt="bookmark-icon" />
-                            } else {
-                                <img class="bookmark-icon" src="~/bookmark-icon.webp" alt="bookmark-icon" />
-                            }
-                        </button>
-                    </form>
+                    </button>
+                </form>
                 }
             </div>
         }
