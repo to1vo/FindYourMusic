@@ -64,25 +64,25 @@ Erilaisia methodeja kappaleiden hakemiseen tietokannasta tai tarkastuksia siitä
 Methodeja joiden avulla voi hakea käyttäjään liittyvää dataa tietokannasta (esim. kaikki kirjanmerkatut kappaleet). Sisältää myös toimintoja uuden käyttäjän luomiseen sekä jo olemassa olevan muokkaamiseen.
 
 ### Etusivu - HomeController
-Hyödyntää Track- ja UserServiceä hakien näin etusivulla näkyvillä olevan datan. Sivulla näkyvä data muuttuu sen perusteella onko käyttäjä kirjautuneena sisään.
+Hyödyntää Track- ja UserServiceä hakien näin etusivulla näkyvillä olevan datan. Sivulla näkyvä data muuttuu sen perusteella onko käyttäjä kirjautuneena sisään. Sisältää Index viewin.
 
 ### About sivu - AboutController
-Palauttaa viewin.
+Palauttaa Index viewin, jossa on about sivun sisältö.
 
 ### Autentikaatio - AuthenticationController 
-Tämän kontrollerin tarkoitus on hallita käyttäjän autentikaatiota, eli kirjautumista sekä uuden käyttäjän luontia. Kontrolleri käyttää tässä apuna UserServiceä. Sisäänkirjautuminen hyödyntää CookieAuthenticationDefaultsia sekä ClaimsIdentityä, eli luo cookien, jolla se pitää käyttäjän kirjautumissession tallessa. Identityyn on tallennettuna käyttäjän nimi sekä id, jonka avulla kirjautuneen käyttäjän dataa voidaan hakea tietokannasta id:n avulla.
+Tämän kontrollerin tarkoitus on hallita käyttäjän autentikaatiota, eli kirjautumista sekä uuden käyttäjän luontia. Kontrolleri käyttää tässä apuna UserServiceä. Sisäänkirjautuminen hyödyntää CookieAuthenticationDefaultsia sekä ClaimsIdentityä, eli luo cookien, jolla se pitää käyttäjän kirjautumissession tallessa. Identityyn on tallennettuna käyttäjän nimi sekä id, jonka avulla kirjautuneen käyttäjän dataa voidaan hakea tietokannasta id:n avulla. Sisältää kaksi partial viewiä _Login ja _SignUp sekä Indexin, jossa on sivun perussisältö.
 
 ### Kappaleiden haku - SearchController
-Hallitsee käyttäjän hakua valituilla kategorioilla hyödyntäen Category-, Track- sekä UserServiceä. Kun käyttäjä hakee kappaleita valituilla kategorioilla tulokset tulevat tietokannasta, koska sinne on tallennettu kaikki kappaleet joita joku on kuvaillut.
+Hallitsee käyttäjän hakua valituilla kategorioilla hyödyntäen Category-, Track- sekä UserServiceä. Kun käyttäjä hakee kappaleita valituilla kategorioilla tulokset tulevat tietokannasta, koska sinne on tallennettu kaikki kappaleet joita joku on kuvaillut. Sisältää Index ja Results viewin. Index viewissä on itse kappaleiden haku toiminto, joka sitten vie käyttäjän results viewiin, jossa näkyy hakutulokset.
 
 ### Kappaleen kuvaus - DescribeController
-Tämän kontrollerin endpointit ovat käytössä vain kirjautuneelle käyttäjälle ja se hyödyntää API-, Category-, Track- sekä UserServiceä. Hallitsee kappaleen kuvaus sivua, hakee yksittäisen kappaleen tiedot API:sta, tuo mahdollisesti käyttäjän edellisen kuvauksen, lisää uuden kuvauksen kappaleelle sekä suorittaa kappaleen manuaalisen lisäyksen.
+Tämän kontrollerin endpointit ovat käytössä vain kirjautuneelle käyttäjälle ja se hyödyntää API-, Category-, Track- sekä UserServiceä. Hallitsee kappaleen kuvaus sivua, hakee yksittäisen kappaleen tiedot API:sta, tuo mahdollisesti käyttäjän edellisen kuvauksen, lisää uuden kuvauksen kappaleelle sekä suorittaa kappaleen manuaalisen lisäyksen. Sisältää Add, AddManual ja Index viewin. Index viewissä on kappaleen valinta eli haku API:sta ja tietokannasta
 
 ### Kappale sivu - TrackController
-Hakee kyseisen kappaleen tiedot tietokannasta sekä siihen liittyvää dataa (esim. samankaltaiset kappaleet, yleisimmät kategoriat), sisältää myös endpointit kirjanmerkin lisäykseen hyödyntäen näissä kaikissa Track- ja UserServiceä. Näkyvä sivu eroaa hieman siitä onko käyttäjä kirjautuneena. Kirjautunut käyttäjä pystyy lisäämään kappaleen kirjanmerkkeihin sekä nähdä oman kuvauksen kyseisestä kappaleesta, josta hän pääsee myös muokkaamaan sitä.
+Hakee kyseisen kappaleen tiedot tietokannasta sekä siihen liittyvää dataa (esim. samankaltaiset kappaleet, yleisimmät kategoriat), sisältää myös endpointit kirjanmerkin lisäykseen hyödyntäen näissä kaikissa Track- ja UserServiceä. Näkyvä sivu eroaa hieman siitä onko käyttäjä kirjautuneena. Kirjautunut käyttäjä pystyy lisäämään kappaleen kirjanmerkkeihin sekä nähdä oman kuvauksen kyseisestä kappaleesta, josta hän pääsee myös muokkaamaan sitä. Sisältää Index viewin.
 
 ### Käyttäjän profiili - UserController
-Käyttää UserServiceä tuoden näkyviin kirjautuneeseen käyttäjään liittyvää dataa (esim. viimeisimmät kuvaukset, käytetyimmät kategoriat) sekä hallitsee käyttäjänimen muokkauksen. Sisältää neljä eri viewiä: profiili, kirjanmerkit, kuvaukset sekä käyttäjänimen muokkaus.
+Käyttää UserServiceä tuoden näkyviin kirjautuneeseen käyttäjään liittyvää dataa (esim. viimeisimmät kuvaukset, käytetyimmät kategoriat) sekä hallitsee käyttäjänimen muokkauksen. Sisältää neljä eri viewiä: profiili, kirjanmerkit, kuvaukset sekä käyttäjänimen muokkaus. 
 
 ### PaginatedList
 Luokka, joka perii List luokan. Eli lista objekti, joka jakaa listan itemit sivuihin ja antaa tiedot maksimi sivumäärästä, sekä siitä onko seuraavaa tai edellistä sivua. Hyödynsin tätä muutamassa eri viewissä, jossa voi mahdollisesti olla paljon dataa, tällöin kohteet jakautuvat sivuihin. 
