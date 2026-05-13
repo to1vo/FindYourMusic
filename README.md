@@ -23,7 +23,7 @@ Web-sovellus, jossa käyttäjät voivat kuvailla kappaleita erilaisilla valmiiks
 Käyttäjä voi hakea siis sivuston tietokannasta kappaleita tietyllä määrällä kategorioita. Hakutuloksiin tulee siis näkyviin vain sellaiset kappaleet, joihin on tehty kuvauksia. Hakutuloksien järjestys määräytyy sen perusteella, kuinka moni kategorioista sopii sekä kuinka usein sitä on annettu kyseiselle kappaleelle.
 
 ### Kappaleiden tietojen tarkastelu
-Klikkaamalla kappaletta vie se kappaleen omalle sivulle, jossa näkyy siihen liittyviä perustietoja sekä mahdollisesti oma kuvaus.
+Kappaleen klikkaus vie kappaleen omalle sivulle, jossa näkyy siihen liittyviä perustietoja sekä mahdollisesti oma kuvaus.
 
 ### Kirjanmerkiksi lisääminen
 Käyttäjä voi painaa kirjanmerkki kuvaketta kappaleiden vierestä eri näkymissä, tämä lisää sen käyttäjän omalle "muista kuunnella" listalle. Käyttäjä voi tietenkin myös halutessaan poistaa kappaleen listalta painamalla samaa kuvaketta uudestaan.
