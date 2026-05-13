@@ -64,7 +64,7 @@ Erilaisia methodeja kappaleiden hakemiseen tietokannasta tai tarkastuksia siitä
 Methodeja joiden avulla voi hakea käyttäjään liittyvää dataa tietokannasta (esim. kaikki kirjanmerkatut kappaleet). Sisältää myös toimintoja uuden käyttäjän luomiseen sekä jo olemassa olevan muokkaamiseen.
 
 ### Etusivu - HomeController
-Hyödyntää Track- ja UserServiceä hakien näin etusivulla näkyvillä olevan datan. Sivulla näkyvä data muuttuu sen perusteella onko käyttäjä kirjautuneena sisään. Sisältää Index viewin.
+Hyödyntää Track- ja UserServiceä hakien näin etusivulla näkyvillä olevan datan. Sivulla näkyvä sisältö muuttuu sen perusteella onko käyttäjä kirjautuneena sisään. Sisältää Index viewin.
 
 ### About sivu - AboutController
 Palauttaa Index viewin, jossa on about sivun sisältö.
