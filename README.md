@@ -56,7 +56,7 @@ Koska sovellus käsittelee kappaleita ja niihin liittyvää tietoa, hyödyntää
 - <b>Emojien tallennus</b>: Jokaiseen kategoriaan liittyy emoji ja jotta emojit pystyi tallentamaan tietokantaan, merkkien enkoodaukseksi piti vaihtaa utf8mb4, muuten suurin osa olisi ollut "?" muodossa.
 
 ### APIService
-Service, jonka avulla voi keskustella rajapinnan kanssa. Methodit kappaleiden hakua sekä kappaleen tietoja varten, jotka käyttävät last.fm API:n track.search ja track.getInfo endpointteja.
+Service, jonka avulla voi keskustella rajapinnan kanssa. Methodit kappaleiden hakua sekä kappaleen tietoja varten, jotka käyttävät last.fm API:n track.search ja track.getInfo endpointteja. Methodit käyttävät HttpClient luokkaa datan hakemiseen sekä JsonSerializeria datan serialisointiin. Http responseja varten tein luokka rakenteet, joiden avulla data saadaan muutettua C# objekti muotoon.  
 
 ### CategoryService
 Sisältää muutaman methodin kategorioiden ja niiden ryhmien tuomiseen tietokannasta, nopeuttaen näin prosessia, joka on aika yleinen.
