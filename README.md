@@ -37,13 +37,6 @@ Kuvaillut kappaleet tallennetaan tietokantaan. Eli kun käyttäjä etsii kappale
 ## Tekninen toteutus
 Sovellus on siis toteutettu ASP .NET Core MVC ohjelmistokehyksellä, joten pääohjelmointikielenä toimi C#. Web-sivun dynaamiset toiminnot on toteutettu tietenkin JavaScriptillä. Tietokantana toimii MySQL ja sitä käsitellään Entity Framework Core kehyksellä. 
 
-### Tiedon haku
-Koska sovellus käsittelee kappaleita ja niihin liittyvää tietoa, hyödyntää se kolmannen osapuolen rajapintaa. Rajapinnaksi valikoitui [last.fm API](https://www.last.fm/api). Sovellus hyödyntää rajapintaa kappaleiden hakemiseen sekä yksittäisen kappaleen tietojen tallentamiseen. Osa kappaleen tiedoista tallennetaan sovelluksen tietokantaan, jotta sivuston toiminnallisuus ei ole vain rajapinnan varassa. Kyseisen rajapinnan tulokset saattaavat olla välillä puutteellisia, joten se piti ottaa huomioon sitä käyttäessä.
-- <b>Kappaleiden haku</b>: Kun käyttäjä on valinnut kategoriat, ohjelma hakee viitetaulusta rivit joissa on joku valituista kategorioista ryhmittäen ne kappaleiden perusteella. Sitten ohjelma laskee kuinka moni kategoriosta on annettu kappaleelle ja kuinka monesti, sitten järjestelee ne ensin kategorian määrän ja sitten . 
-- <b>Samanlaisten kappaleiden haku</b>: Hakee neljä ensimmäistä kappaletta verratuna valitun kyseisen kappaleen neljään yleisimpään kategoriaan.
-- <b>Käyttäjälle suositellut kappaleet</b>: Käyttäjälle suositellut kappaleet tulevat käyttäjän eniten käytettyjen kategorioiden perusteella, eli ohjelma hakee ensin käyttäjän 4 käytetyintä kategoriaa ja sitten kappaleet samalla tavalla kuin kappaleiden haussa ja ottaen niistä 5 ensimmäistä.
-- <b>Emojien tallennus</b>: Jokaiseen kategoriaan liittyy emoji ja jotta emojit pystyi tallentamaan tietokantaan, merkkien enkoodaukseksi piti vaihtaa utf8mb4, muuten suurin osa olisi "?" muodossa.
-
 ### Tiedon tallennus
 Kaikki lomakkeet joiden dataa tallennetaan tietokantaan on liitettynä omaan ViewModeliin, jonka avulla lomakkeen arvot voidaan tarkastaa.
 - <b>User</b>: Käyttäjänimi sekä enkryptattu salasana.
@@ -54,6 +47,13 @@ Kaikki lomakkeet joiden dataa tallennetaan tietokantaan on liitettynä omaan Vie
 - <b>Bookmark</b>: Tähän viitetauluun tallentuu käyttäjien kirjanmerkatut kappaleet.
 
 ![Er-kaavio](https://github.com/to1vo/FindYourMusic/blob/main/er-kaavio.png)
+
+### Tiedon haku
+Koska sovellus käsittelee kappaleita ja niihin liittyvää tietoa, hyödyntää se kolmannen osapuolen rajapintaa. Rajapinnaksi valikoitui [last.fm API](https://www.last.fm/api). Sovellus hyödyntää rajapintaa kappaleiden hakemiseen sekä yksittäisen kappaleen tietojen tallentamiseen. Osa kappaleen tiedoista tallennetaan sovelluksen tietokantaan, jotta sivuston toiminnallisuus ei ole vain rajapinnan varassa. Kyseisen rajapinnan tulokset saattaavat olla välillä puutteellisia, joten se piti ottaa huomioon sitä käyttäessä. Alempana kuvaus muutamasta moni mutkikkaammasta hausta, muuten haut perustuvat yleensä päivämäärään tai rivien määrään.
+- <b>Kappaleiden haku</b>: Kun käyttäjä on valinnut kategoriat, ohjelma hakee viitetaulusta rivit joissa on joku valituista kategorioista ryhmittäen ne kappaleiden perusteella. Sitten ohjelma laskee kuinka moni kategoriosta on annettu kappaleelle ja kuinka monesti sekä järjestelee ne ensin kategorioiden määrän ja sitten käytön perusteella. 
+- <b>Samanlaiset kappaleet</b>: Ohjelma hakee ensin valitun kappaleen neljä yleisintä kategoriaa ja sitten valitsee viitetaulusta kaikki kuvaukset ja ryhmittää ne kappaleiden ja kategorioiden perusteella laskien myös rivien määrän. Sitten ohjelma pisteyttää kappaleet tyylillä jokainen sopiva kategoria * rivienmäärä ja lopuksi järjestää ne pisteytyksen perusteella ja valitsee 4 ensimmäistä. 
+- <b>Käyttäjälle suositellut kappaleet</b>: Ohjelma hakee ensin käyttäjän 4 käytetyintä kategoriaa ja sitten kappaleet samalla tavalla kuin edellisessä haussa ottaen niistä 5 ensimmäistä.
+- <b>Emojien tallennus</b>: Jokaiseen kategoriaan liittyy emoji ja jotta emojit pystyi tallentamaan tietokantaan, merkkien enkoodaukseksi piti vaihtaa utf8mb4, muuten suurin osa olisi ollut "?" muodossa.
 
 ### APIService
 Service, jonka avulla voi keskustella rajapinnan kanssa. Methodit kappaleiden hakua sekä kappaleen tietoja varten, jotka käyttävät last.fm API:n track.search ja track.getInfo endpointteja.
