@@ -39,9 +39,10 @@ Sovellus on siis toteutettu ASP .NET Core MVC ohjelmistokehyksellä, joten pää
 
 ### Tiedon haku
 Koska sovellus käsittelee kappaleita ja niihin liittyvää tietoa, hyödyntää se kolmannen osapuolen rajapintaa. Rajapinnaksi valikoitui [last.fm API](https://www.last.fm/api). Sovellus hyödyntää rajapintaa kappaleiden hakemiseen sekä yksittäisen kappaleen tietojen tallentamiseen. Osa kappaleen tiedoista tallennetaan sovelluksen tietokantaan, jotta sivuston toiminnallisuus ei ole vain rajapinnan varassa. Kyseisen rajapinnan tulokset saattaavat olla välillä puutteellisia, joten se piti ottaa huomioon sitä käyttäessä.
-- <b>Kappaleiden haku:</b>
-- <b>Samanlaisten kappaleiden haku:</b>
-- <b>Emojien tallennus:</b>
+- <b>Kappaleiden haku</b>: Kun käyttäjä on valinnut kategoriat, ohjelma hakee viitetaulusta rivit joissa on joku valituista kategorioista ryhmittäen ne kappaleiden perusteella. Sitten ohjelma laskee kuinka moni kategoriosta on annettu kappaleelle ja kuinka monesti, sitten järjestelee ne ensin kategorian määrän ja sitten . 
+- <b>Samanlaisten kappaleiden haku</b>: Hakee neljä ensimmäistä kappaletta verratuna valitun kyseisen kappaleen neljään yleisimpään kategoriaan.
+- <b>Käyttäjälle suositellut kappaleet</b>: Käyttäjälle suositellut kappaleet tulevat käyttäjän eniten käytettyjen kategorioiden perusteella, eli ohjelma hakee ensin käyttäjän 4 käytetyintä kategoriaa ja sitten kappaleet samalla tavalla kuin kappaleiden haussa ja ottaen niistä 5 ensimmäistä.
+- <b>Emojien tallennus</b>: Jokaiseen kategoriaan liittyy emoji ja jotta emojit pystyi tallentamaan tietokantaan, merkkien enkoodaukseksi piti vaihtaa utf8mb4, muuten suurin osa olisi "?" muodossa.
 
 ### Tiedon tallennus
 Kaikki lomakkeet joiden dataa tallennetaan tietokantaan on liitettynä omaan ViewModeliin, jonka avulla lomakkeen arvot voidaan tarkastaa.
