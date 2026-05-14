@@ -39,6 +39,9 @@ Sovellus on siis toteutettu ASP .NET Core MVC ohjelmistokehyksellä, joten pää
 
 ### Tiedon haku
 Koska sovellus käsittelee kappaleita ja niihin liittyvää tietoa, hyödyntää se kolmannen osapuolen rajapintaa. Rajapinnaksi valikoitui [last.fm API](https://www.last.fm/api). Sovellus hyödyntää rajapintaa kappaleiden hakemiseen sekä yksittäisen kappaleen tietojen tallentamiseen. Osa kappaleen tiedoista tallennetaan sovelluksen tietokantaan, jotta sivuston toiminnallisuus ei ole vain rajapinnan varassa. Kyseisen rajapinnan tulokset saattaavat olla välillä puutteellisia, joten se piti ottaa huomioon sitä käyttäessä.
+- <b>Kappaleiden haku:</b>
+- <b>Samanlaisten kappaleiden haku:</b>
+- <b>Emojien tallennus:</b>
 
 ### Tiedon tallennus
 Kaikki lomakkeet joiden dataa tallennetaan tietokantaan on liitettynä omaan ViewModeliin, jonka avulla lomakkeen arvot voidaan tarkastaa.
