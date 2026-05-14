@@ -89,7 +89,7 @@ Hakee kyseisen kappaleen tiedot tietokannasta sekä siihen liittyvää dataa (es
 Käyttää UserServiceä tuoden näkyviin kirjautuneeseen käyttäjään liittyvää dataa (esim. viimeisimmät kuvaukset, käytetyimmät kategoriat) sekä hallitsee käyttäjänimen muokkauksen. Sisältää neljä eri viewiä: profiili, kirjanmerkit, kuvaukset sekä käyttäjänimen muokkaus. Profiili näkymässä on käyttäjän viimeisimmät tapahtumat, kirjanmerkit näkymässä on kappaleet, jotka käyttäjä on lisännyt kirjanmerkkeihin, kuvaukset näkymässä on kaikki käyttäjän kuvailemat kappaleet ja käyttäjänimen muokkaus sivulla on lomake sitä varten.
 
 ### PaginatedList
-Luokka, joka perii List luokan. Eli lista objekti, joka jakaa listan itemit sivuihin ja antaa tiedot maksimi sivumäärästä, sekä siitä onko seuraavaa tai edellistä sivua. Hyödynsin tätä muutamassa eri viewissä, jossa voi mahdollisesti olla paljon dataa, tällöin kohteet jakautuvat sivuihin. 
+Luokka, joka perii List luokan. Eli lista objekti, joka jakaa listan itemit sivuihin ja antaa tiedot maksimi sivumäärästä, sekä siitä onko seuraavaa tai edellistä sivua. Hyödynsin tätä muutamassa eri viewissä, jossa voi mahdollisesti olla paljon dataa, jolloin kohteiden on hyvä jakautua sivuihin. 
 
 ### JavaScript
 Sovellus hyödyntää JavaScriptiä tilanteissa, jossa sivuston datan/ulkonäön päivitys pitää tapahtua dynaamisesti ilman sen uudelleen latausta. Scriptit, joita moni viewi hyödyntää ovat erillisinä tiedostoina, muuten koodi on suoraan tietyssä viewissä script tagin sisällä. 
