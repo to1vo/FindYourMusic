@@ -68,7 +68,7 @@ Erilaisia methodeja kappaleiden hakemiseen tietokannasta tai tarkastuksia siitä
 Methodeja joiden avulla voi hakea käyttäjään liittyvää dataa tietokannasta (esim. kaikki kirjanmerkatut kappaleet). Sisältää myös toimintoja uuden käyttäjän luomiseen sekä jo olemassa olevan muokkaamiseen.
 
 ### Linkit
-Iso osa sivuista toimii urlin GET parametrien perusteella, esimerkiksi kappaleen oma sivu tai kappaleen kuvaus sivu. Osassa sivuista on takaisinpäin nuoli, esimerkiksi hakutuloksista voi mennä takaisin haku kategorioiden valintaan ja kategoriat pysyvät valittuna. Tämä toimii siten, että hakutulos sivu luo linkin jonka parametreihin on asetettu valitut kategoriat. Muissa tapauksissa ensimmäinen sivu antaa GET parametrinä omat parametrit jotta toinen sivu pystyy luomaan linkin, joka palauttaa ensimmäiseen sivuun, säilyttäen saman datan. Jos sivua ei löydy kontrolleri palauttaa notfound sivun.
+Iso osa sivuista toimii urlin GET parametrien perusteella, esimerkiksi kappaleen oma sivu tai kappaleen kuvaus sivu. Osassa sivuista on takaisinpäin nuoli, esimerkiksi hakutuloksista voi mennä takaisin haku kategorioiden valintaan ja kategoriat pysyvät valittuna. Tämä toimii siten, että hakutulos sivu luo linkin jonka parametreihin on asetettu valitut kategoriat. Muissa tapauksissa ensimmäinen sivu antaa GET parametrinä omat parametrit jotta toinen sivu pystyy luomaan linkin, joka palauttaa ensimmäiseen sivuun, säilyttäen saman datan. Jos sivua ei löydy kontrolleri palauttaa NotFound sivun.
 
 ### Etusivu - HomeController
 Hyödyntää Track- ja UserServiceä hakien näin etusivulla näkyvillä olevan datan. Sivulla näkyvä sisältö muuttuu sen perusteella onko käyttäjä kirjautuneena sisään. Sisältää Index viewin.
