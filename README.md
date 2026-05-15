@@ -38,7 +38,7 @@ Kuvaillut kappaleet tallennetaan tietokantaan. Eli kun käyttäjä etsii kappale
 Sovellus on siis toteutettu ASP .NET Core MVC ohjelmistokehyksellä, joten pääohjelmointikielenä toimi C#. Web-sivun dynaamiset toiminnot on toteutettu tietenkin JavaScriptillä. Tietokantana toimii MySQL ja sitä käsitellään Entity Framework Core kehyksellä. 
 
 ### Tiedon tallennus
-Suurin osa lomakkeista joiden dataa tallennetaan tietokantaan on liitettynä omaan ViewModeliin, jonka avulla lomakkeen arvot voidaan tarkastaa. Muissa tapauksissa itse kontrolleri tekee tarkastukset annettuihin lomakkeen arvoihin esim. että kategorioita saa olla kuvauksessa maksimissaan 4, tämä estää sen jos käyttäjä yrittäisi manuaalisesti lisätä inputteja formiin.
+Suurin osa lomakkeista joiden dataa tallennetaan tietokantaan on liitettynä omaan ViewModeliin, jonka avulla lomakkeen arvot voidaan tarkastaa. Muissa tapauksissa itse kontrolleri tekee tarkastukset annettuihin lomakkeen arvoihin esim. että kategorioita saa olla kuvauksessa maksimissaan 4, tämä estää sen jos käyttäjä yrittäisi manuaalisesti lisätä inputteja formiin kehittäjän työkalujen kautta.
 - <b>User</b>: Käyttäjänimi sekä enkryptattu salasana.
 - <b>Track</b>: Kategorisoiduista kappaleista tallennetaan tärkeimmät tiedot. Rajapinnasta tulleet sekä käyttäjien manuaalisesti lisäämät. Käyttäjien lisäämät merkataan "userAdded" sarakkeella. Koska API:sta tuleva data saattaa olla puutteellista usea sarake saa olla null. Jos kappaleen albumin kuvaketta ei ole, sivu käyttää oletuskuvaketta.
 - <b>Category</b>: Kategoriat, joilla kappaleita kuvaillaan on tallennettuna tietokantaan.
